@@ -59,13 +59,9 @@ const defaultContent = `
 
 <h2>∑ Math Support</h2>
 
-<p>Inline math: <span class="math-node math-inline" data-latex="E = mc^2" data-display-mode="false"></span></p>
+<p>Inline math: $E = mc^2$ (type <code>/inline-math</code> to insert)</p>
 
-<p>Block math equation:</p>
-<span class="math-node math-block" data-latex="\int_{0}^{\infty} x^2 dx = \left[\frac{x^3}{3}\right]_{0}^{\infty}" data-display-mode="true"></span>
-
-<p>Another example - Euler's identity:</p>
-<span class="math-node math-block" data-latex="e^{i\pi} + 1 = 0" data-display-mode="true"></span>
+<p>Block math: Type <code>/block-math</code> to insert displayed equations.</p>
 
 <h2>💻 Code Support</h2>
 

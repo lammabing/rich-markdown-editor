@@ -107,17 +107,6 @@ export const MathExtension = Node.create<MathOptions>({
     const latex = node.attrs.latex;
     const isBlock = node.attrs.displayMode;
     
-    let renderedHtml = '';
-    try {
-      renderedHtml = katex.renderToString(latex, {
-        displayMode: isBlock,
-        throwOnError: false,
-        errorColor: '#cc0000',
-      });
-    } catch (error) {
-      renderedHtml = `<span style="color: #cc0000;">Invalid LaTeX: ${latex}</span>`;
-    }
-    
     return [
       'span',
       mergeAttributes(
@@ -127,11 +116,7 @@ export const MathExtension = Node.create<MathOptions>({
         this.options.HTMLAttributes,
         HTMLAttributes
       ),
-      {
-        dangerouslySetInnerHTML: {
-          __html: renderedHtml
-        }
-      }
+      0
     ];
   },
 

@@ -93,9 +93,9 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
 
   // Update editor content when content prop changes
   useEffect(() => {
-    if (editor && content) {
+    if (editor && content && editor.isEditable) {
       const currentContent = editor.getHTML();
-      if (currentContent !== content) {
+      if (currentContent !== content && content !== '<p></p>') {
         editor.commands.setContent(content);
       }
     }
