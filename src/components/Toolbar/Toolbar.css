@@ -15,14 +15,14 @@
 .toolbar-group {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .toolbar-divider {
   width: 1px;
   height: 28px;
   background-color: #e5e7eb;
-  margin: 0 4px;
+  margin: 0 6px;
 }
 
 .toolbar-spacer {
@@ -33,23 +33,41 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 10px;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 6px;
   color: #374151;
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
-  min-width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  position: relative;
 }
 
 .toolbar button:hover:not(:disabled) {
   background-color: #f3f4f6;
   border-color: #d1d5db;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.toolbar button:hover:not(:disabled)::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1f2937;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
 .toolbar button:active:not(:disabled) {
@@ -70,22 +88,14 @@
   background-color: #f9fafb;
 }
 
-.toolbar button em {
-  font-style: italic;
-  font-family: Georgia, serif;
+.toolbar button svg {
+  width: 18px;
+  height: 18px;
 }
 
-.toolbar button strong {
-  font-weight: 700;
-}
-
-.toolbar button u {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.toolbar button s {
-  text-decoration: line-through;
+.toolbar button span {
+  font-size: 13px;
+  font-weight: 600;
 }
 
 /* Color buttons */
@@ -94,21 +104,26 @@
 }
 
 .color-btn {
-  font-family: Georgia, serif;
-  font-weight: 700;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.color-red {
+.color-red svg {
   color: #dc2626;
 }
 
-.color-green {
+.color-green svg {
   color: #16a34a;
 }
 
-.color-blue {
+.color-blue svg {
   color: #2563eb;
+}
+
+/* Emoji buttons */
+.toolbar button:not(.color-btn) {
+  font-size: 16px;
 }
 
 /* Responsive adjustments */
@@ -119,17 +134,22 @@
   }
 
   .toolbar button {
-    padding: 4px 8px;
-    font-size: 12px;
-    min-width: 32px;
+    width: 32px;
     height: 32px;
+    padding: 4px;
+  }
+
+  .toolbar button svg {
+    width: 16px;
+    height: 16px;
   }
 
   .toolbar-divider {
     height: 24px;
+    margin: 0 4px;
   }
 
-  .toolbar-group:nth-child(n+6) {
+  .toolbar-group:nth-child(n+8) {
     display: none;
   }
 }
@@ -160,5 +180,10 @@
 
   .toolbar-divider {
     background-color: #4b5563;
+  }
+
+  .toolbar button:hover:not(:disabled)::after {
+    background-color: #f3f4f6;
+    color: #1f2937;
   }
 }

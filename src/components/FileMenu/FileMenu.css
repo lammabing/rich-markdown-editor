@@ -1,23 +1,23 @@
 .file-menu {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .file-menu-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 500;
+  justify-content: center;
+  padding: 6px;
   color: #374151;
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  position: relative;
 }
 
 .file-menu-btn:hover {
@@ -26,9 +26,33 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
+.file-menu-btn:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1f2937;
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
 .file-menu-btn:active {
   background-color: #e5e7eb;
   transform: translateY(1px);
+}
+
+.file-menu-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,5 +65,10 @@
   .file-menu-btn:hover {
     background-color: #4b5563;
     border-color: #6b7280;
+  }
+
+  .file-menu-btn:hover::after {
+    background-color: #f3f4f6;
+    color: #1f2937;
   }
 }
