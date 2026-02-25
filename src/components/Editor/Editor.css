@@ -452,3 +452,37 @@ span.critic-highlight {
     break-inside: avoid;
   }
 }
+
+/* Help node styles */
+.help-node {
+  background-color: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5em;
+  margin: 1em 0;
+}
+
+.help-node h2 {
+  color: #1e40af;
+  margin-top: 0;
+}
+
+.help-node h3 {
+  color: #374151;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+
+.help-node ul {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 0.875em;
+  color: #4b5563;
+}
+
+.help-node code {
+  background-color: #f1f5f9;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 0.85em;
+}

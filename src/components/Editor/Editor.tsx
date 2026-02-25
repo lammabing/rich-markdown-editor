@@ -19,6 +19,7 @@ import { FootnoteReference, FootnoteDefinition } from '../../extensions/Footnote
 import { AlertExtension } from '../../extensions/AlertExtension';
 import { EmojiExtension } from '../../extensions/EmojiExtension';
 import { HTMLBlockExtension } from '../../extensions/HTMLBlockExtension';
+import { HelpExtension } from '../../extensions/HelpExtension';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
 import './Editor.css';
 
@@ -64,6 +65,7 @@ export function Editor({ content = '', onChange }: EditorProps) {
       AlertExtension,
       EmojiExtension,
       HTMLBlockExtension,
+      HelpExtension,
       Placeholder.configure({
         placeholder: 'Type \'/\' for commands or start writing...',
       }),

@@ -317,6 +317,14 @@ export const commandItems: CommandItem[] = [
     command: (editor) => editor.chain().focus().insertHTMLBlock({ htmlContent: '<p>Your HTML here</p>' }).run(),
     aliases: ['html', 'custom-html'],
   },
+  // Help command
+  {
+    title: 'Help',
+    description: 'Show help and syntax guide',
+    category: 'insert',
+    command: (editor) => editor.chain().focus().insertHelp().run(),
+    aliases: ['guide', 'syntax', 'commands', '?'],
+  },
 ];
 
 export const slashCommand: Partial<SuggestionOptions> = {
