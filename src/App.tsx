@@ -59,59 +59,27 @@ const defaultContent = `
 
 <h2>∑ Math Support</h2>
 
-<p>Inline math: $E = mc^2$ (type <code>/inline-math</code> to insert)</p>
+<p>Type <code>/inline-math</code> for inline equations like $x^2$ or <code>/block-math</code> for displayed equations.</p>
 
-<p>Block math: Type <code>/block-math</code> to insert displayed equations.</p>
+<div data-alert-type="tip">
+  <p><strong>💡 TIP</strong></p>
+  <p>Try typing <code>/math</code> and selecting "Inline Math" or "Block Math" from the command menu!</p>
+</div>
 
 <h2>💻 Code Support</h2>
 
 <h3>Inline Code</h3>
 
-<p>Use <code>console.log()</code> for debugging or <code>npm install</code> to add packages. Inline code is styled with a monospace font and light background.</p>
+<p>Use backticks for <code>inline code</code> like <code>console.log()</code> or <code>npm install</code>.</p>
 
 <h3>Code Blocks with Syntax Highlighting</h3>
 
-<p>Code blocks support syntax highlighting for multiple languages:</p>
+<p>Type <code>/code</code> or <code>/code-block</code> to insert a code block, then specify the language.</p>
 
-<pre><code class="language-javascript">// JavaScript Example
-function greet(name) {
-  console.log("Hello, " + name + "!");
-  return "Welcome, " + name + "!";
-}
-
-greet("World");</code></pre>
-
-<pre><code class="language-python"># Python Example
-def fibonacci(n):
-    """Generate Fibonacci sequence up to n terms."""
-    if n &lt;= 0:
-        return []
-    elif n == 1:
-        return [0]
-    
-    sequence = [0, 1]
-    while len(sequence) &lt; n:
-        next_num = sequence[-1] + sequence[-2]
-        sequence.append(next_num)
-    
-    return sequence
-
-print(fibonacci(10))</code></pre>
-
-<pre><code class="language-typescript">// TypeScript Example
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-const createUser = (name: string, email: string): User =&gt; {
-  return {
-    id: Date.now(),
-    name: name,
-    email: email
-  };
-};</code></pre>
+<div data-alert-type="note">
+  <p><strong>📝 NOTE</strong></p>
+  <p>Supported languages include: JavaScript, TypeScript, Python, Java, C++, Go, Rust, Ruby, PHP, HTML, CSS, SQL, and many more!</p>
+</div>
 
 <h2>📋 Note Callout</h2>
 

@@ -121,7 +121,9 @@ export const MathExtension = Node.create<MathOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(MathComponent);
+    return ReactNodeViewRenderer(MathComponent, {
+      contentDOMElementTag: 'span',
+    });
   },
 
   addCommands() {
