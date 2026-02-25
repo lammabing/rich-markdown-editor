@@ -44,6 +44,35 @@ npm run preview  # Preview production build
 
 ---
 
+## File Operations
+
+### Saving Documents
+
+**💾 Save as Markdown**
+- Click the **💾 Save** button in the toolbar
+- Or press `Ctrl+S` (Windows/Linux) / `Cmd+S` (Mac)
+- Downloads your document as `document.md`
+
+### Opening Documents
+
+**📂 Open Markdown File**
+- Click the **📂 Open** button in the toolbar
+- Or press `Ctrl+O` (Windows/Linux) / `Cmd+O` (Mac)
+- Select a `.md` or `.markdown` file to open
+- The markdown is converted and rendered in the editor
+
+### Exporting
+
+**📄 Export as HTML**
+- Click **📄 Export HTML** in the toolbar
+- Downloads a styled HTML file
+
+**🖨️ Print**
+- Click **🖨️ Print** in the toolbar
+- Or press `Ctrl+P` / `Cmd+P`
+
+---
+
 ## Syntax Guide
 
 ### Basic Formatting
@@ -344,6 +373,9 @@ Type `/` followed by a search term to filter commands.
 
 | Shortcut | Action |
 |----------|--------|
+| `Ctrl/Cmd + S` | Save as Markdown |
+| `Ctrl/Cmd + O` | Open Markdown file |
+| `Ctrl/Cmd + P` | Print document |
 | `Ctrl/Cmd + B` | Toggle bold |
 | `Ctrl/Cmd + I` | Toggle italic |
 | `Ctrl/Cmd + U` | Toggle underline |
