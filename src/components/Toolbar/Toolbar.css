@@ -1,0 +1,164 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: linear-gradient(to bottom, #ffffff, #f9fafb);
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 28px;
+  background-color: #e5e7eb;
+  margin: 0 4px;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 36px;
+  height: 36px;
+}
+
+.toolbar button:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.toolbar button:active:not(:disabled) {
+  background-color: #e5e7eb;
+  transform: translateY(1px);
+}
+
+.toolbar button.is-active {
+  background-color: #dbeafe;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+
+.toolbar button em {
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+.toolbar button strong {
+  font-weight: 700;
+}
+
+.toolbar button u {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.toolbar button s {
+  text-decoration: line-through;
+}
+
+/* Color buttons */
+.toolbar-colors {
+  gap: 2px;
+}
+
+.color-btn {
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.color-red {
+  color: #dc2626;
+}
+
+.color-green {
+  color: #16a34a;
+}
+
+.color-blue {
+  color: #2563eb;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 6px 8px;
+    gap: 2px;
+  }
+
+  .toolbar button {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 32px;
+    height: 32px;
+  }
+
+  .toolbar-divider {
+    height: 24px;
+  }
+
+  .toolbar-group:nth-child(n+6) {
+    display: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .toolbar {
+    background: linear-gradient(to bottom, #1f2937, #111827);
+    border-bottom-color: #374151;
+  }
+
+  .toolbar button {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+
+  .toolbar button:hover:not(:disabled) {
+    background-color: #4b5563;
+    border-color: #6b7280;
+  }
+
+  .toolbar button.is-active {
+    background-color: #1e40af;
+    border-color: #3b82f6;
+    color: #dbeafe;
+  }
+
+  .toolbar-divider {
+    background-color: #4b5563;
+  }
+}

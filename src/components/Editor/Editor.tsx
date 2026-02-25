@@ -11,6 +11,7 @@ import { TableHeader } from '@tiptap/extension-table-header';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import CharacterCount from '@tiptap/extension-character-count';
 import { common, createLowlight } from 'lowlight';
 import { MathExtension } from '../../extensions/MathExtension';
 import { Highlight } from '../../extensions/Highlight';
@@ -21,6 +22,7 @@ import { EmojiExtension } from '../../extensions/EmojiExtension';
 import { HTMLBlockExtension } from '../../extensions/HTMLBlockExtension';
 import { HelpExtension } from '../../extensions/HelpExtension';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
+import { Toolbar } from '../Toolbar/Toolbar';
 import './Editor.css';
 
 const lowlight = createLowlight(common);
@@ -55,6 +57,9 @@ export function Editor({ content = '', onChange }: EditorProps) {
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      CharacterCount.configure({
+        limit: null,
+      }),
       MathExtension,
       Highlight,
       CriticDeletion,
@@ -77,14 +82,29 @@ export function Editor({ content = '', onChange }: EditorProps) {
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none max-w-none',
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none max-w-none editor-content',
       },
     },
   });
 
+  if (!editor) {
+    return null;
+  }
+
   return (
-    <div className="editor-container w-full h-full">
-      <EditorContent editor={editor} />
+    <div className="editor-wrapper">
+      <Toolbar editor={editor} />
+      <div className="editor-container">
+        <EditorContent editor={editor} />
+      </div>
+      <div className="editor-statusbar">
+        <span className="status-item">
+          {editor.storage.characterCount?.words() || 0} words
+        </span>
+        <span className="status-item">
+          {editor.storage.characterCount?.characters() || 0} characters
+        </span>
+      </div>
     </div>
   );
 }

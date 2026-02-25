@@ -1,30 +1,116 @@
 import { Editor } from './components/Editor';
 import './App.css';
 
-const defaultContent = `# Welcome to the Markdown Editor! 👋
+const defaultContent = `
+<h1>Welcome to the Markdown Editor! 👋</h1>
 
-Type \`/\` to see all available commands.
+<p>This is a <strong>modern, feature-rich</strong> markdown editor with real-time in-place rendering.</p>
 
-## Quick Start
+<h2>🚀 Quick Start</h2>
 
-1. **Type \`/\`** - Opens the command palette
-2. **Start typing** - Filter commands by name
-3. **Use arrow keys** - Navigate the menu
-4. **Press Enter** - Select a command
+<p>Type <code>/</code> to open the command palette and see all available commands!</p>
 
-## Try These Commands
+<h3>Try these commands:</h3>
 
-- \`/help\` - Show syntax guide
-- \`/tip\` - Insert a tip callout
-- \`/table\` - Insert a table
-- \`/emoji\` - Insert an emoji
-- \`/inline-math\` - Insert math equation
+<ul data-type="taskList">
+  <li data-type="taskItem" data-checked="false"><div><p>Type <code>/help</code> to see the syntax guide</p></div></li>
+  <li data-type="taskItem" data-checked="false"><div><p>Type <code>/tip</code> to insert a tip callout</p></div></li>
+  <li data-type="taskItem" data-checked="false"><div><p>Type <code>/table</code> to insert a table</p></div></li>
+  <li data-type="taskItem" data-checked="true"><div><p>Use the toolbar above for quick formatting</p></div></li>
+</ul>
 
-## Example Content
+<h2>📝 Text Formatting</h2>
 
-Type \`/note\`, \`/warning\`, or \`/code-block\` to see more features!
+<p>You can format text in various ways using the toolbar or keyboard shortcuts:</p>
 
-For full documentation, see **README.md**.
+<ul>
+  <li><strong>Bold text</strong> - Ctrl+B</li>
+  <li><em>Italic text</em> - Ctrl+I</li>
+  <li><u>Underlined text</u> - Ctrl+U</li>
+  <li><s>Strikethrough</s></li>
+  <li><mark class="highlight">Highlighted text</mark></li>
+</ul>
+
+<h2>💡 Tip Callout</h2>
+
+<div data-alert-type="tip">
+  <p><strong>💡 TIP</strong></p>
+  <p>Use the toolbar buttons above for quick access to common formatting options!</p>
+</div>
+
+<h2>📊 Example Table</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Status</th>
+      <th>Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Real-time Rendering</td>
+      <td>✅ Done</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>Slash Commands</td>
+      <td>✅ Done</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <td>Syntax Highlighting</td>
+      <td>✅ Done</td>
+      <td>Medium</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>∑ Math Support</h2>
+
+<p>Inline math: <span data-latex="E = mc^2" data-display-mode="false"></span></p>
+
+<p>Block math:</p>
+<span data-latex="\\int_{0}^{\\infty} x^2 dx" data-display-mode="true"></span>
+
+<h2>📋 Note Callout</h2>
+
+<div data-alert-type="note">
+  <p><strong>📝 NOTE</strong></p>
+  <p>For full documentation, see <strong>README.md</strong> in the project root.</p>
+</div>
+
+<h2>⌨️ Keyboard Shortcuts</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Shortcut</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Ctrl+B</code></td>
+      <td>Toggle bold</td>
+    </tr>
+    <tr>
+      <td><code>Ctrl+I</code></td>
+      <td>Toggle italic</td>
+    </tr>
+    <tr>
+      <td><code>Ctrl+Z</code></td>
+      <td>Undo</td>
+    </tr>
+    <tr>
+      <td><code>Ctrl+Y</code></td>
+      <td>Redo</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Happy writing! ✍️</p>
 `;
 
 function App() {
