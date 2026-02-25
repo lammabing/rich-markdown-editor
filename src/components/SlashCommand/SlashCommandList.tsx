@@ -100,7 +100,7 @@ export const SlashCommandList = forwardRef((props: SlashCommandListProps, ref) =
             <span className="category-icon">{categoryIcons[category]}</span>
             <span className="category-label">{categoryLabels[category]}</span>
           </div>
-          {items.map((item, index) => {
+          {items.map((item) => {
             const globalIndex = item.originalIndex;
             const isSelected = selectedIndex === globalIndex;
             return (

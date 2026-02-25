@@ -2,7 +2,7 @@ import { ReactRenderer } from '@tiptap/react';
 import type { SuggestionOptions } from '@tiptap/suggestion';
 import tippy from 'tippy.js';
 import type { GetReferenceClientRect } from 'tippy.js';
-import { SlashCommandList } from './SlashCommandList';
+import { SlashCommandList } from '../components/SlashCommand/SlashCommandList';
 
 export interface CommandItem {
   title: string;
