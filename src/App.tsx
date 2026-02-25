@@ -61,6 +61,62 @@ const defaultContent = `
 
 <p>Inline math: <span data-latex="E = mc^2" data-display-mode="false"></span></p>
 
+<p>Block math equation:</p>
+<span data-latex="\int_{0}^{\infty} x^2 dx = \left[\frac{x^3}{3}\right]_{0}^{\infty}" data-display-mode="true"></span>
+
+<p>Another example - Euler's identity:</p>
+<span data-latex="e^{i\pi} + 1 = 0" data-display-mode="true"></span>
+
+<h2>💻 Code Support</h2>
+
+<h3>Inline Code</h3>
+
+<p>Use <code>console.log()</code> for debugging or <code>npm install</code> to add packages. Inline code is styled with a monospace font and light background.</p>
+
+<h3>Code Blocks with Syntax Highlighting</h3>
+
+<p>Code blocks support syntax highlighting for multiple languages:</p>
+
+<pre><code class="language-javascript">// JavaScript Example
+function greet(name) {
+  console.log("Hello, " + name + "!");
+  return "Welcome, " + name + "!";
+}
+
+greet("World");</code></pre>
+
+<pre><code class="language-python"># Python Example
+def fibonacci(n):
+    """Generate Fibonacci sequence up to n terms."""
+    if n &lt;= 0:
+        return []
+    elif n == 1:
+        return [0]
+    
+    sequence = [0, 1]
+    while len(sequence) &lt; n:
+        next_num = sequence[-1] + sequence[-2]
+        sequence.append(next_num)
+    
+    return sequence
+
+print(fibonacci(10))</code></pre>
+
+<pre><code class="language-typescript">// TypeScript Example
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const createUser = (name: string, email: string): User =&gt; {
+  return {
+    id: Date.now(),
+    name: name,
+    email: email
+  };
+};</code></pre>
+
 <h2>📋 Note Callout</h2>
 
 <div data-alert-type="note">
