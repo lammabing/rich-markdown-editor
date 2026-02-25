@@ -104,14 +104,34 @@ export const MathExtension = Node.create<MathOptions>({
   },
 
   renderHTML({ node, HTMLAttributes }) {
+    const latex = node.attrs.latex;
+    const isBlock = node.attrs.displayMode;
+    
+    let renderedHtml = '';
+    try {
+      renderedHtml = katex.renderToString(latex, {
+        displayMode: isBlock,
+        throwOnError: false,
+        errorColor: '#cc0000',
+      });
+    } catch (error) {
+      renderedHtml = `<span style="color: #cc0000;">Invalid LaTeX: ${latex}</span>`;
+    }
+    
     return [
       'span',
       mergeAttributes(
-        { 'data-latex': node.attrs.latex },
-        { 'data-display-mode': node.attrs.displayMode },
+        { 'data-latex': latex },
+        { 'data-display-mode': isBlock },
+        { class: isBlock ? 'math-block' : 'math-inline' },
         this.options.HTMLAttributes,
         HTMLAttributes
       ),
+      {
+        dangerouslySetInnerHTML: {
+          __html: renderedHtml
+        }
+      }
     ];
   },
 
