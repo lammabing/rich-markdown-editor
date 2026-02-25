@@ -54,7 +54,7 @@
 .toolbar button:hover:not(:disabled)::after {
   content: attr(title);
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   background-color: #1f2937;
@@ -65,7 +65,7 @@
   font-weight: 500;
   white-space: nowrap;
   z-index: 1000;
-  margin-bottom: 4px;
+  margin-top: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   pointer-events: none;
 }
