@@ -270,3 +270,68 @@
 .hljs-bullet { color: #005cc5; }
 .hljs-addition { color: #22863a; background-color: #f0fff4; }
 .hljs-deletion { color: #d73a49; background-color: #ffeef0; }
+
+/* Math (KaTeX) styles */
+.math-node {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.math-block {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.math-inline {
+  margin: 0 0.2em;
+}
+
+/* Highlight mark styles */
+mark.highlight {
+  background-color: #fef08a;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+/* CriticMarkup styles */
+del.critic-deletion {
+  background-color: #ffeef0;
+  color: #cb2431;
+  text-decoration: line-through;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+ins.critic-insertion {
+  background-color: #f0fff4;
+  color: #22863a;
+  text-decoration: underline;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+span.critic-highlight {
+  background-color: #fef08a;
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+
+/* Footnote styles */
+.footnote-ref {
+  vertical-align: super;
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.footnote-definition {
+  border-top: 1px solid #eaeaea;
+  margin-top: 2em;
+  padding-top: 1em;
+  font-size: 0.875em;
+  color: #666;
+}
+
+.footnote-definition sup {
+  margin-right: 0.5em;
+}

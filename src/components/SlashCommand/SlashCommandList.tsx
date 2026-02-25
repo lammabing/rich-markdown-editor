@@ -83,6 +83,8 @@ export const SlashCommandList = forwardRef((props: SlashCommandListProps, ref) =
     blocks: '📦',
     color: '🎨',
     insert: '🔧',
+    math: '∑',
+    markup: '🏷️',
   };
 
   const categoryLabels: Record<string, string> = {
@@ -90,6 +92,8 @@ export const SlashCommandList = forwardRef((props: SlashCommandListProps, ref) =
     blocks: 'Blocks',
     color: 'Colors',
     insert: 'Insert',
+    math: 'Math',
+    markup: 'Markup',
   };
 
   return (

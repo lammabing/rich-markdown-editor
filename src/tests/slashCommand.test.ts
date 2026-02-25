@@ -67,7 +67,7 @@ describe('commandItems', () => {
   });
 
   it('commands have valid category values', () => {
-    const validCategories = ['format', 'blocks', 'color', 'insert'];
+    const validCategories = ['format', 'blocks', 'color', 'insert', 'math', 'markup'];
     
     commandItems.forEach(command => {
       expect(validCategories).toContain(command.category);

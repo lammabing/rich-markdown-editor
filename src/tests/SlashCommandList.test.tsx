@@ -107,14 +107,42 @@ describe('SlashCommandList', () => {
 
   it('displays category icons', () => {
     const { container } = render(
-      <SlashCommandList 
-        items={mockItems} 
-        command={mockCommand} 
+      <SlashCommandList
+        items={mockItems}
+        command={mockCommand}
       />
     );
 
     // Check for emoji icons
     const icons = container.querySelectorAll('.category-icon');
     expect(icons.length).toBeGreaterThan(0);
+  });
+
+  it('renders Math and Markup categories', () => {
+    const extendedItems = [
+      ...mockItems,
+      {
+        title: 'Inline Math',
+        description: 'Insert inline LaTeX equation',
+        category: 'math' as const,
+      },
+      {
+        title: 'Highlight',
+        description: 'Highlight text',
+        category: 'markup' as const,
+      },
+    ];
+
+    render(
+      <SlashCommandList
+        items={extendedItems}
+        command={mockCommand}
+      />
+    );
+
+    expect(screen.getByText('Math')).toBeInTheDocument();
+    expect(screen.getByText('Markup')).toBeInTheDocument();
+    expect(screen.getByText('Inline Math')).toBeInTheDocument();
+    expect(screen.getByText('Highlight')).toBeInTheDocument();
   });
 });

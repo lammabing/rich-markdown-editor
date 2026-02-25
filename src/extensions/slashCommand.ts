@@ -7,7 +7,7 @@ import { SlashCommandList } from '../components/SlashCommand/SlashCommandList';
 export interface CommandItem {
   title: string;
   description: string;
-  category: 'format' | 'blocks' | 'color' | 'insert';
+  category: 'format' | 'blocks' | 'color' | 'insert' | 'math' | 'markup';
   command: (editor: any) => void;
   aliases?: string[];
 }
@@ -220,6 +220,50 @@ export const commandItems: CommandItem[] = [
     category: 'insert',
     command: (editor) => editor.chain().focus().setHardBreak().run(),
     aliases: ['br', 'break'],
+  },
+  // Math commands
+  {
+    title: 'Inline Math',
+    description: 'Insert inline LaTeX equation',
+    category: 'math',
+    command: (editor) => editor.chain().focus().insertMath({ latex: 'x^2', displayMode: false }).run(),
+    aliases: ['math', 'equation', 'latex', 'formula'],
+  },
+  {
+    title: 'Block Math',
+    description: 'Insert block LaTeX equation',
+    category: 'math',
+    command: (editor) => editor.chain().focus().insertMath({ latex: 'E = mc^2', displayMode: true }).run(),
+    aliases: ['display-math', 'block-equation'],
+  },
+  // Markup commands
+  {
+    title: 'Highlight',
+    description: 'Highlight text with background color',
+    category: 'markup',
+    command: (editor) => editor.chain().focus().toggleHighlight().run(),
+    aliases: ['mark'],
+  },
+  {
+    title: 'Deletion',
+    description: 'Mark text as deleted (strikethrough)',
+    category: 'markup',
+    command: (editor) => editor.chain().focus().toggleCriticDeletion().run(),
+    aliases: ['delete', 'remove'],
+  },
+  {
+    title: 'Insertion',
+    description: 'Mark text as inserted',
+    category: 'markup',
+    command: (editor) => editor.chain().focus().toggleCriticInsertion().run(),
+    aliases: ['add', 'insert'],
+  },
+  {
+    title: 'Footnote',
+    description: 'Insert footnote reference',
+    category: 'markup',
+    command: (editor) => editor.chain().focus().insertFootnote({ id: '1', label: '1' }).run(),
+    aliases: ['note', 'reference'],
   },
 ];
 

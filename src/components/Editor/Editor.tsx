@@ -12,6 +12,10 @@ import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
+import { MathExtension } from '../../extensions/MathExtension';
+import { Highlight } from '../../extensions/Highlight';
+import { CriticDeletion, CriticInsertion, CriticHighlight } from '../../extensions/CriticMarkup';
+import { FootnoteReference, FootnoteDefinition } from '../../extensions/Footnotes';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
 import './Editor.css';
 
@@ -47,6 +51,13 @@ export function Editor({ content = '', onChange }: EditorProps) {
       CodeBlockLowlight.configure({
         lowlight,
       }),
+      MathExtension,
+      Highlight,
+      CriticDeletion,
+      CriticInsertion,
+      CriticHighlight,
+      FootnoteReference,
+      FootnoteDefinition,
       Placeholder.configure({
         placeholder: 'Type \'/\' for commands or start writing...',
       }),
