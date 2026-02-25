@@ -265,6 +265,58 @@ export const commandItems: CommandItem[] = [
     command: (editor) => editor.chain().focus().insertFootnote({ id: '1', label: '1' }).run(),
     aliases: ['note', 'reference'],
   },
+  // Alert/Callout commands
+  {
+    title: 'Note',
+    description: 'Insert a note callout',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertAlert({ alertType: 'note' }).run(),
+    aliases: ['callout', 'alert-note'],
+  },
+  {
+    title: 'Tip',
+    description: 'Insert a tip callout',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertAlert({ alertType: 'tip' }).run(),
+    aliases: ['hint', 'alert-tip'],
+  },
+  {
+    title: 'Warning',
+    description: 'Insert a warning callout',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertAlert({ alertType: 'warning' }).run(),
+    aliases: ['caution', 'alert-warning'],
+  },
+  {
+    title: 'Danger',
+    description: 'Insert a danger callout',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertAlert({ alertType: 'danger' }).run(),
+    aliases: ['error', 'alert-danger'],
+  },
+  {
+    title: 'Info',
+    description: 'Insert an info callout',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertAlert({ alertType: 'info' }).run(),
+    aliases: ['information', 'alert-info'],
+  },
+  // Emoji commands
+  {
+    title: 'Emoji',
+    description: 'Insert an emoji',
+    category: 'insert',
+    command: (editor) => editor.chain().focus().insertEmoji({ emoji: '😀' }).run(),
+    aliases: ['emoticon', 'smile'],
+  },
+  // HTML commands
+  {
+    title: 'HTML Block',
+    description: 'Insert custom HTML block',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertHTMLBlock({ htmlContent: '<p>Your HTML here</p>' }).run(),
+    aliases: ['html', 'custom-html'],
+  },
 ];
 
 export const slashCommand: Partial<SuggestionOptions> = {

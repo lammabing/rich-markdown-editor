@@ -16,6 +16,9 @@ import { MathExtension } from '../../extensions/MathExtension';
 import { Highlight } from '../../extensions/Highlight';
 import { CriticDeletion, CriticInsertion, CriticHighlight } from '../../extensions/CriticMarkup';
 import { FootnoteReference, FootnoteDefinition } from '../../extensions/Footnotes';
+import { AlertExtension } from '../../extensions/AlertExtension';
+import { EmojiExtension } from '../../extensions/EmojiExtension';
+import { HTMLBlockExtension } from '../../extensions/HTMLBlockExtension';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
 import './Editor.css';
 
@@ -58,6 +61,9 @@ export function Editor({ content = '', onChange }: EditorProps) {
       CriticHighlight,
       FootnoteReference,
       FootnoteDefinition,
+      AlertExtension,
+      EmojiExtension,
+      HTMLBlockExtension,
       Placeholder.configure({
         placeholder: 'Type \'/\' for commands or start writing...',
       }),
