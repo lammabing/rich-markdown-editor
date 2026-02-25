@@ -1,4 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
+import { useEffect } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Color from '@tiptap/extension-color';
@@ -89,6 +90,16 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
       },
     },
   });
+
+  // Update editor content when content prop changes
+  useEffect(() => {
+    if (editor && content) {
+      const currentContent = editor.getHTML();
+      if (currentContent !== content) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [content, editor]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
