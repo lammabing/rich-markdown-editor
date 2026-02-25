@@ -1,6 +1,10 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import Color from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
+import Underline from '@tiptap/extension-underline';
+import { slashCommand } from '../SlashCommand';
 import './Editor.css';
 
 export interface EditorProps {
@@ -16,9 +20,13 @@ export function Editor({ content = '', onChange }: EditorProps) {
           levels: [1, 2, 3, 4, 5, 6],
         },
       }),
+      Color,
+      TextStyle,
+      Underline,
       Placeholder.configure({
         placeholder: 'Type \'/\' for commands or start writing...',
       }),
+      slashCommand,
     ],
     content,
     onUpdate: ({ editor }) => {

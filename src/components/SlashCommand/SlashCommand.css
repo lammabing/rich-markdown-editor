@@ -1,0 +1,92 @@
+.slash-command-menu {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  padding: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  min-width: 280px;
+  z-index: 1000;
+}
+
+.slash-command-category {
+  margin-bottom: 8px;
+}
+
+.slash-command-category:last-child {
+  margin-bottom: 0;
+}
+
+.slash-command-category-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.category-icon {
+  font-size: 0.875rem;
+}
+
+.category-label {
+  color: #6b7280;
+}
+
+.slash-command-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.slash-command-item:hover,
+.slash-command-item.is-selected {
+  background-color: #f3f4f6;
+}
+
+.slash-command-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.slash-command-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.slash-command-item-description {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.slash-command-no-results {
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* Tippy.js theme for slash commands */
+.tippy-box[data-theme~='slash-command'] {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.tippy-box[data-theme~='slash-command'] .tippy-content {
+  padding: 0;
+}

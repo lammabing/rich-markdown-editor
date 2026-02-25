@@ -114,3 +114,18 @@
 .ProseMirror ::selection {
   background-color: #b4d5fe;
 }
+
+/* Text color styles */
+.ProseMirror span[data-color] {
+  font-weight: 500;
+}
+
+/* Color utility classes for Tailwind integration */
+.text-red-600 { color: #dc2626; }
+.text-green-600 { color: #16a34a; }
+.text-blue-600 { color: #2563eb; }
+.text-yellow-600 { color: #ca8a04; }
+.text-orange-600 { color: #ea580c; }
+.text-purple-600 { color: #9333ea; }
+.text-pink-600 { color: #db2777; }
+.text-gray-600 { color: #4b5563; }
