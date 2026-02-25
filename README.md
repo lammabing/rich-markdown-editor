@@ -158,11 +158,20 @@ Use slash commands:
 ### Code
 
 #### Inline Code
+
+Use backticks for inline code:
+
 ```markdown
 Use `console.log()` for debugging
+Install with `npm install package-name`
 ```
 
-#### Code Blocks
+Renders as: Use `console.log()` for debugging
+
+#### Code Blocks with Syntax Highlighting
+
+Use triple backticks with a language identifier:
+
 ````markdown
 ```javascript
 function hello() {
@@ -171,27 +180,101 @@ function hello() {
 ```
 ````
 
-Supported languages: JavaScript, TypeScript, Python, Java, C++, Go, Rust, Ruby, PHP, HTML, CSS, SQL, and many more.
+**Supported Languages:**
+- JavaScript (`javascript`, `js`)
+- TypeScript (`typescript`, `ts`)
+- Python (`python`, `py`)
+- Java (`java`)
+- C++ (`cpp`, `c++`)
+- C# (`csharp`, `cs`)
+- Go (`go`, `golang`)
+- Rust (`rust`, `rs`)
+- Ruby (`ruby`, `rb`)
+- PHP (`php`)
+- HTML (`html`)
+- CSS (`css`)
+- SQL (`sql`)
+- JSON (`json`)
+- XML (`xml`)
+- YAML (`yaml`, `yml`)
+- Markdown (`markdown`, `md`)
+- Shell (`shell`, `bash`, `sh`)
+
+**Example Code Blocks:**
+
+```javascript
+// JavaScript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+  return `Welcome, ${name}!`;
+}
+```
+
+```python
+# Python
+def fibonacci(n):
+    if n <= 0:
+        return []
+    sequence = [0, 1]
+    while len(sequence) < n:
+        sequence.append(sequence[-1] + sequence[-2])
+    return sequence
+```
+
+```typescript
+// TypeScript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+```
 
 ---
 
 ### Math/LaTeX
 
 #### Inline Math
+
+Use single dollar signs for inline equations:
+
 ```markdown
 The equation $E = mc^2$ is famous.
+The value of $\pi$ is approximately 3.14159.
 ```
 
+Renders as: The equation $E = mc^2$ is famous.
+
 #### Block Math
+
+Use double dollar signs for displayed equations:
+
 ```markdown
 $$
-\int_{0}^{\infty} x^2 dx
+\int_{0}^{\infty} x^2 dx = \left[\frac{x^3}{3}\right]_{0}^{\infty}
+$$
+
+$$
+e^{i\pi} + 1 = 0
 $$
 ```
 
 **Slash Commands:**
 - `/inline-math` - Insert inline LaTeX equation
 - `/block-math` - Insert block LaTeX equation
+
+**Common LaTeX Examples:**
+
+| Description | LaTeX |
+|-------------|-------|
+| Fraction | `$\frac{a}{b}$` |
+| Square root | `$\sqrt{x}$` |
+| Superscript | `$x^2$` |
+| Subscript | `$x_i$` |
+| Sum | `$\sum_{i=1}^{n}$` |
+| Integral | `$\int_{a}^{b}$` |
+| Greek letters | `$\alpha, \beta, \gamma$` |
+| Inequality | `$x \leq y$` |
 
 ---
 
