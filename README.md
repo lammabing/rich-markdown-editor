@@ -441,6 +441,136 @@ markdown-editor/
 
 ---
 
+## Customization
+
+### Changing Fonts and Font Sizes
+
+The editor uses the **Inter** font family by default, loaded from Google Fonts. You can customize fonts and sizes by editing `src/components/Editor/Editor.css`.
+
+#### To Change the Font Family
+
+1. Open `src/components/Editor/Editor.css`
+
+2. Update the `@import` statement (line 2) to load a different Google Font:
+   ```css
+   /* Example: Using Roboto instead of Inter */
+   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+   ```
+
+3. Update the `font-family` declarations (lines 8 and 48):
+   ```css
+   .editor-wrapper {
+     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+   }
+
+   .ProseMirror {
+     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+   }
+   ```
+
+#### To Change the Base Font Size
+
+Edit the `font-size` property in `.ProseMirror` (line 49):
+
+```css
+.ProseMirror {
+  font-size: 18px;  /* Change from default 16px */
+  line-height: 1.8;
+  color: #1f2937;
+}
+```
+
+#### To Change Heading Sizes
+
+Find the heading styles (lines 73-107) and adjust the `font-size` values:
+
+```css
+.ProseMirror h1 { font-size: 3em; }    /* Default: 2.5em */
+.ProseMirror h2 { font-size: 2.5em; }  /* Default: 2em */
+.ProseMirror h3 { font-size: 1.75em; } /* Default: 1.5em */
+.ProseMirror h4 { font-size: 1.5em; }  /* Default: 1.25em */
+.ProseMirror h5 { font-size: 1.25em; } /* Default: 1.125em */
+.ProseMirror h6 { font-size: 1.125em; }/* Default: 1em */
+```
+
+#### To Change Line Height
+
+Edit the `line-height` property:
+
+```css
+.ProseMirror {
+  font-size: 16px;
+  line-height: 2.0;  /* Increase from 1.8 for more spacing */
+}
+
+.ProseMirror p {
+  line-height: 2.0;  /* Match the parent */
+}
+```
+
+#### To Change Letter Spacing
+
+Edit the `letter-spacing` property for headings:
+
+```css
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  letter-spacing: -0.03em;  /* More negative = tighter */
+}
+```
+
+#### Complete Font Customization Example
+
+Here's a complete example using **Merriweather** for a serif look:
+
+```css
+/* 1. Import the font */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+
+/* 2. Apply to editor wrapper */
+.editor-wrapper {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 17px;
+}
+
+/* 3. Apply to editor content */
+.ProseMirror {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+/* 4. Adjust headings */
+.ProseMirror h1 { font-size: 2.75em; font-weight: 700; }
+.ProseMirror h2 { font-size: 2.25em; font-weight: 700; }
+.ProseMirror h3 { font-size: 1.75em; font-weight: 700; }
+```
+
+#### Popular Google Fonts for Editors
+
+| Font | Style | Import URL |
+|------|-------|------------|
+| **Inter** | Sans-serif | `?family=Inter:wght@400;500;600;700` |
+| **Roboto** | Sans-serif | `?family=Roboto:wght@400;500;700` |
+| **Open Sans** | Sans-serif | `?family=Open+Sans:wght@400;600;700` |
+| **Lato** | Sans-serif | `?family=Lato:wght@400;700` |
+| **Merriweather** | Serif | `?family=Merriweather:wght@400;700` |
+| **Playfair Display** | Serif | `?family=Playfair+Display:wght@400;700` |
+| **Fira Code** | Monospace | `?family=Fira+Code:wght@400;500` |
+| **JetBrains Mono** | Monospace | `?family=JetBrains+Mono:wght@400;500` |
+
+#### Recommended Font Size Combinations
+
+| Use Case | Base Size | H1 | H2 | H3 | Line Height |
+|----------|-----------|----|----|----|-------------|
+| **Default** | 16px | 2.5em | 2em | 1.5em | 1.8 |
+| **Large Text** | 18px | 2.5em | 2em | 1.5em | 1.9 |
+| **Compact** | 14px | 2em | 1.75em | 1.5em | 1.6 |
+| **Accessibility** | 20px | 2em | 1.75em | 1.5em | 2.0 |
+
+---
+
 ## Testing
 
 ```bash
