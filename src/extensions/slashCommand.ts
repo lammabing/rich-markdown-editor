@@ -79,6 +79,13 @@ export const commandItems: CommandItem[] = [
     aliases: ['ol', 'ordered'],
   },
   {
+    title: 'Task List',
+    description: 'Create a task list with checkboxes',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().toggleTaskList().run(),
+    aliases: ['todo', 'checkbox', 'task'],
+  },
+  {
     title: 'Blockquote',
     description: 'Create a quote block',
     category: 'blocks',
@@ -87,10 +94,53 @@ export const commandItems: CommandItem[] = [
   },
   {
     title: 'Code Block',
-    description: 'Insert a code block',
+    description: 'Insert a code block with syntax highlighting',
     category: 'blocks',
     command: (editor) => editor.chain().focus().toggleCodeBlock().run(),
-    aliases: ['pre'],
+    aliases: ['pre', 'code'],
+  },
+  // Table commands
+  {
+    title: 'Table',
+    description: 'Insert a table',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+    aliases: ['table'],
+  },
+  {
+    title: 'Add Column Right',
+    description: 'Add column to the right',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().addColumnRight().run(),
+    aliases: ['column-right'],
+  },
+  {
+    title: 'Add Column Left',
+    description: 'Add column to the left',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().addColumnLeft().run(),
+    aliases: ['column-left'],
+  },
+  {
+    title: 'Add Row Above',
+    description: 'Add row above',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().addRowAbove().run(),
+    aliases: ['row-above'],
+  },
+  {
+    title: 'Add Row Below',
+    description: 'Add row below',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().addRowBelow().run(),
+    aliases: ['row-below'],
+  },
+  {
+    title: 'Delete Table',
+    description: 'Delete the table',
+    category: 'blocks',
+    command: (editor) => editor.chain().focus().deleteTable().run(),
+    aliases: ['delete-table'],
   },
   // Color commands
   {

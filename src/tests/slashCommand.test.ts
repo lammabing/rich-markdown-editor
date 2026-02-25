@@ -96,6 +96,8 @@ describe('commandItems', () => {
 });
 
 describe('slashCommand configuration', () => {
+  const mockEditor = { state: {}, commands: {} } as any;
+
   it('has correct char trigger', () => {
     expect(slashCommand.char).toBe('/');
   });
@@ -117,24 +119,30 @@ describe('slashCommand configuration', () => {
 
   describe('items filter', () => {
     it('returns all items when query is empty', () => {
-      const result = slashCommand.items!({ query: '' });
-      expect(result.length).toBe(commandItems.length);
+      const result = slashCommand.items?.({ query: '', editor: mockEditor });
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBe(commandItems.length);
     });
 
     it('filters items by title', () => {
-      const result = slashCommand.items!({ query: 'bold' });
+      const result = slashCommand.items?.({ query: 'bold', editor: mockEditor });
       
-      expect(result.length).toBeGreaterThan(0);
-      result.forEach(item => {
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBeGreaterThan(0);
+      items.forEach(item => {
         expect(item.title.toLowerCase()).toContain('bold');
       });
     });
 
     it('filters items by description', () => {
-      const result = slashCommand.items!({ query: 'color' });
+      const result = slashCommand.items?.({ query: 'color', editor: mockEditor });
       
-      expect(result.length).toBeGreaterThan(0);
-      result.forEach(item => {
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBeGreaterThan(0);
+      items.forEach(item => {
         expect(
           item.title.toLowerCase().includes('color') ||
           item.description.toLowerCase().includes('color')
@@ -143,28 +151,34 @@ describe('slashCommand configuration', () => {
     });
 
     it('filters items by aliases', () => {
-      const result = slashCommand.items!({ query: 'red' });
+      const result = slashCommand.items?.({ query: 'red', editor: mockEditor });
       
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.some(item => item.title === 'Red Text')).toBe(true);
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBeGreaterThan(0);
+      expect(items.some(item => item.title === 'Red Text')).toBe(true);
     });
 
     it('is case insensitive', () => {
-      const result = slashCommand.items!({ query: 'BOLD' });
+      const result = slashCommand.items?.({ query: 'BOLD', editor: mockEditor });
       
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.some(item => item.title === 'Bold')).toBe(true);
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBeGreaterThan(0);
+      expect(items.some(item => item.title === 'Bold')).toBe(true);
     });
 
     it('returns empty array when no matches found', () => {
-      const result = slashCommand.items!({ query: 'xyznonexistent' });
-      expect(result.length).toBe(0);
+      const result = slashCommand.items?.({ query: 'xyznonexistent', editor: mockEditor });
+      expect(result).toBeDefined();
+      const items = result as any[];
+      expect(items.length).toBe(0);
     });
   });
 
   describe('command execution', () => {
     it('command function calls props.command with editor', () => {
-      const mockEditor = {
+      const mockEditorInner = {
         chain: vi.fn().mockReturnThis(),
         focus: vi.fn().mockReturnThis(),
         deleteRange: vi.fn().mockReturnThis(),
@@ -176,16 +190,16 @@ describe('slashCommand configuration', () => {
       const mockRange = { from: 0, to: 5 };
 
       slashCommand.command!({ 
-        editor: mockEditor as any, 
+        editor: mockEditorInner as any, 
         range: mockRange as any, 
         props: mockProps as any 
       });
 
       expect(mockProps.command).toHaveBeenCalled();
-      expect(mockEditor.chain).toHaveBeenCalled();
-      expect(mockEditor.focus).toHaveBeenCalled();
-      expect(mockEditor.deleteRange).toHaveBeenCalledWith(mockRange);
-      expect(mockEditor.run).toHaveBeenCalled();
+      expect(mockEditorInner.chain).toHaveBeenCalled();
+      expect(mockEditorInner.focus).toHaveBeenCalled();
+      expect(mockEditorInner.deleteRange).toHaveBeenCalledWith(mockRange);
+      expect(mockEditorInner.run).toHaveBeenCalled();
     });
   });
 });

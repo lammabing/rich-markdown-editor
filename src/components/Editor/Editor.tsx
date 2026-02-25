@@ -4,8 +4,18 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
+import { Table } from '@tiptap/extension-table';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { common, createLowlight } from 'lowlight';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
 import './Editor.css';
+
+const lowlight = createLowlight(common);
 
 export interface EditorProps {
   content?: string;
@@ -19,10 +29,24 @@ export function Editor({ content = '', onChange }: EditorProps) {
         heading: {
           levels: [1, 2, 3, 4, 5, 6],
         },
+        codeBlock: false,
       }),
       Color,
       TextStyle,
       Underline,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableCell,
+      TableHeader,
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
       Placeholder.configure({
         placeholder: 'Type \'/\' for commands or start writing...',
       }),
