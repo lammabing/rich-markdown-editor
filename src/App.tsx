@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Editor } from './components/Editor';
+import { markdownToHtml } from './utils/fileUtils';
 import './App.css';
 
 const defaultContent = `
@@ -17,18 +19,6 @@ const defaultContent = `
   <li data-type="taskItem" data-checked="false"><div><p>Type <code>/tip</code> to insert a tip callout</p></div></li>
   <li data-type="taskItem" data-checked="false"><div><p>Type <code>/table</code> to insert a table</p></div></li>
   <li data-type="taskItem" data-checked="true"><div><p>Use the toolbar above for quick formatting</p></div></li>
-</ul>
-
-<h2>📝 Text Formatting</h2>
-
-<p>You can format text in various ways using the toolbar or keyboard shortcuts:</p>
-
-<ul>
-  <li><strong>Bold text</strong> - Ctrl+B</li>
-  <li><em>Italic text</em> - Ctrl+I</li>
-  <li><u>Underlined text</u> - Ctrl+U</li>
-  <li><s>Strikethrough</s></li>
-  <li><mark class="highlight">Highlighted text</mark></li>
 </ul>
 
 <h2>💡 Tip Callout</h2>
@@ -71,9 +61,6 @@ const defaultContent = `
 
 <p>Inline math: <span data-latex="E = mc^2" data-display-mode="false"></span></p>
 
-<p>Block math:</p>
-<span data-latex="\\int_{0}^{\\infty} x^2 dx" data-display-mode="true"></span>
-
 <h2>📋 Note Callout</h2>
 
 <div data-alert-type="note">
@@ -81,42 +68,34 @@ const defaultContent = `
   <p>For full documentation, see <strong>README.md</strong> in the project root.</p>
 </div>
 
-<h2>⌨️ Keyboard Shortcuts</h2>
+<h2>💾 Save & Open Files</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Shortcut</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Ctrl+B</code></td>
-      <td>Toggle bold</td>
-    </tr>
-    <tr>
-      <td><code>Ctrl+I</code></td>
-      <td>Toggle italic</td>
-    </tr>
-    <tr>
-      <td><code>Ctrl+Z</code></td>
-      <td>Undo</td>
-    </tr>
-    <tr>
-      <td><code>Ctrl+Y</code></td>
-      <td>Redo</td>
-    </tr>
-  </tbody>
-</table>
+<p>Use the file menu in the toolbar:</p>
+<ul>
+  <li><strong>💾 Save</strong> - Download as Markdown file (Ctrl+S)</li>
+  <li><strong>📂 Open</strong> - Open a Markdown file (Ctrl+O)</li>
+  <li><strong>📄 Export HTML</strong> - Export as styled HTML</li>
+  <li><strong>🖨️ Print</strong> - Print the document (Ctrl+P)</li>
+</ul>
 
 <p>Happy writing! ✍️</p>
 `;
 
 function App() {
+  const [content, setContent] = useState(defaultContent);
+
+  const handleOpenFile = (markdownContent: string) => {
+    const html = markdownToHtml(markdownContent);
+    setContent(html);
+  };
+
   return (
     <div className="app">
-      <Editor content={defaultContent} />
+      <Editor 
+        content={content} 
+        onChange={setContent}
+        onOpenFile={handleOpenFile}
+      />
     </div>
   );
 }

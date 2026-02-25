@@ -23,6 +23,8 @@ import { HTMLBlockExtension } from '../../extensions/HTMLBlockExtension';
 import { HelpExtension } from '../../extensions/HelpExtension';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
 import { Toolbar } from '../Toolbar/Toolbar';
+import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
+import { htmlToMarkdown } from '../../utils/fileUtils';
 import './Editor.css';
 
 const lowlight = createLowlight(common);
@@ -30,9 +32,10 @@ const lowlight = createLowlight(common);
 export interface EditorProps {
   content?: string;
   onChange?: (content: string) => void;
+  onOpenFile?: (content: string) => void;
 }
 
-export function Editor({ content = '', onChange }: EditorProps) {
+export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -87,13 +90,45 @@ export function Editor({ content = '', onChange }: EditorProps) {
     },
   });
 
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    onSave: () => {
+      if (!editor) return;
+      const html = editor.getHTML();
+      const markdown = htmlToMarkdown(html);
+      const blob = new Blob([markdown], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'document.md';
+      link.click();
+      URL.revokeObjectURL(url);
+    },
+    onOpen: () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.md,.markdown,.txt';
+      input.onchange = async (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file && onOpenFile) {
+          const markdown = await file.text();
+          onOpenFile(markdown);
+        }
+      };
+      input.click();
+    },
+    onPrint: () => {
+      window.print();
+    },
+  });
+
   if (!editor) {
     return null;
   }
 
   return (
     <div className="editor-wrapper">
-      <Toolbar editor={editor} />
+      <Toolbar editor={editor} onOpenFile={onOpenFile || (() => {})} />
       <div className="editor-container">
         <EditorContent editor={editor} />
       </div>

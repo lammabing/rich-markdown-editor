@@ -1,17 +1,23 @@
 import { Editor } from '@tiptap/react';
+import { FileMenu } from '../FileMenu/FileMenu';
 import './Toolbar.css';
 
 interface ToolbarProps {
   editor: Editor;
+  onOpenFile: (content: string) => void;
 }
 
-export function Toolbar({ editor }: ToolbarProps) {
+export function Toolbar({ editor, onOpenFile }: ToolbarProps) {
   if (!editor) {
     return null;
   }
 
   return (
     <div className="toolbar">
+      <FileMenu editor={editor} onOpenFile={onOpenFile} />
+
+      <div className="toolbar-divider" />
+
       <div className="toolbar-group">
         <button
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
