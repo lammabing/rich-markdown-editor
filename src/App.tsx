@@ -59,11 +59,19 @@ const defaultContent = `
 
 <h2>∑ Math Support</h2>
 
-<p>Type <code>/inline-math</code> for inline equations like $x^2$ or <code>/block-math</code> for displayed equations.</p>
+<p>Type <code>/inline-math</code> for inline equations or <code>/block-math</code> for displayed equations.</p>
+
+<p><strong>Example: Quadratic Formula</strong></p>
+
+<p>Type <code>/block-math</code> and enter this formula:</p>
+
+<p><code>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</code></p>
+
+<p>This will render as a beautiful displayed equation!</p>
 
 <div data-alert-type="tip">
   <p><strong>💡 TIP</strong></p>
-  <p>Try typing <code>/math</code> and selecting "Inline Math" or "Block Math" from the command menu!</p>
+  <p>Try typing <code>/math</code> and selecting "Block Math" from the command menu, then paste the quadratic formula above!</p>
 </div>
 
 <h2>💻 Code Support</h2>
