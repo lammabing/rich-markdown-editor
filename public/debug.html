@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug</title>
+</head>
+<body>
+    <h1>Debug Page</h1>
+    <div id="status"></div>
+    <script>
+        const status = document.getElementById('status');
+        status.innerHTML = '<p>Loading app...</p>';
+        
+        fetch('/src/main.tsx')
+            .then(r => {
+                status.innerHTML += '<p>✓ main.tsx loaded</p>';
+                return r.text();
+            })
+            .then(text => {
+                status.innerHTML += '<p>✓ Content length: ' + text.length + '</p>';
+            })
+            .catch(e => {
+                status.innerHTML += '<p>✗ Error: ' + e.message + '</p>';
+            });
+    </script>
+</body>
+</html>

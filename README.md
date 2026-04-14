@@ -33,6 +33,25 @@ npm install
 npm run dev
 ```
 
+### WSL2 Network Configuration (Windows Users)
+
+If you're running this project in WSL2 and want to access it from Windows browsers, you need to enable **mirrored network mode**:
+
+1. Add the following to `/etc/wsl.conf`:
+   ```ini
+   [network]
+   networkingMode = mirrored
+   ```
+
+2. Restart WSL from Windows PowerShell:
+   ```powershell
+   wsl --shutdown
+   ```
+
+3. After restart, the dev server will be accessible from Windows at `http://localhost:5173`
+
+For detailed troubleshooting, see [WSL-NETWORK-FIX.md](./WSL-NETWORK-FIX.md).
+
 ### Commands
 
 ```bash
