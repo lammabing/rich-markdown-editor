@@ -1,5 +1,5 @@
 /* Import Inter font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); */
 
 /* Editor wrapper - contains toolbar, content, and status bar */
 .editor-wrapper {
@@ -112,6 +112,24 @@
 .ProseMirror ol {
   padding-left: 1.5em;
   margin: 0.75em 0;
+  list-style-type: revert;
+  list-style-position: outside;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+}
+
+.ProseMirror ul ul {
+  list-style-type: circle;
+}
+
+.ProseMirror ul ul ul {
+  list-style-type: square;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
 }
 
 .ProseMirror li {
@@ -520,8 +538,8 @@
   color: #dc2626;
 }
 
-/* Text color styles */
-.ProseMirror span[data-color] {
+/* Text color styles - inline styles handle the actual color application */
+.ProseMirror span[style*="color:"] {
   font-weight: 500;
 }
 

@@ -1,4 +1,4 @@
-import { Node, mergeAttributes, nodePasteRule } from '@tiptap/core';
+import { Node, mergeAttributes, nodeInputRule, nodePasteRule } from '@tiptap/core';
 import { NodeViewWrapper, ReactNodeViewRenderer, type ReactNodeViewProps } from '@tiptap/react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
@@ -11,7 +11,7 @@ export interface MathOptions {
 function MathComponent(props: ReactNodeViewProps) {
   const { node, selected } = props;
   const latex = node.attrs.latex;
-  const isBlock = node.attrs.displayMode;
+  const isBlock = node.type.name === 'blockMath';
 
   const renderMath = () => {
     try {
@@ -51,10 +51,12 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     math: {
       insertMath: (props: { latex: string; displayMode?: boolean }) => ReturnType;
+      insertBlockMath: (props: { latex: string }) => ReturnType;
     };
   }
 }
 
+// Inline Math Extension ($...$)
 export const MathExtension = Node.create<MathOptions>({
   name: 'math',
 
@@ -77,13 +79,6 @@ export const MathExtension = Node.create<MathOptions>({
           'data-latex': attributes.latex,
         }),
       },
-      displayMode: {
-        default: false,
-        parseHTML: (element) => element.getAttribute('data-display-mode') === 'true',
-        renderHTML: (attributes) => ({
-          'data-display-mode': attributes.displayMode,
-        }),
-      },
     };
   },
 
@@ -98,32 +93,25 @@ export const MathExtension = Node.create<MathOptions>({
   parseHTML() {
     return [
       {
-        tag: 'span[data-latex]',
+        tag: 'span[data-latex]:not([data-display-mode])',
       },
     ];
   },
 
   renderHTML({ node, HTMLAttributes }) {
-    const latex = node.attrs.latex;
-    const isBlock = node.attrs.displayMode;
-    
     return [
       'span',
       mergeAttributes(
-        { 'data-latex': latex },
-        { 'data-display-mode': isBlock },
-        { class: isBlock ? 'math-block' : 'math-inline' },
+        { 'data-latex': node.attrs.latex },
+        { class: 'math-inline' },
         this.options.HTMLAttributes,
         HTMLAttributes
       ),
-      0
     ];
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(MathComponent, {
-      contentDOMElementTag: 'span',
-    });
+    return ReactNodeViewRenderer(MathComponent);
   },
 
   addCommands() {
@@ -131,33 +119,144 @@ export const MathExtension = Node.create<MathOptions>({
       insertMath:
         ({ latex, displayMode = false }) =>
         ({ commands }) => {
+          if (displayMode) {
+            return commands.insertContent({
+              type: 'blockMath',
+              attrs: { latex },
+            });
+          }
           return commands.insertContent({
             type: this.name,
-            attrs: {
-              latex,
-              displayMode,
-            },
+            attrs: { latex },
           });
         },
     };
   },
 
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /\$([^$\s][^$]*?[^$\s]?)\$$/,
+        type: this.type,
+        getAttributes: (match) => ({
+          latex: match[1],
+        }),
+      }),
+    ];
+  },
+
   addPasteRules() {
     return [
       nodePasteRule({
-        find: /\$\$([\s\S]+?)\$\$/,
+        find: /\$([^$\s][^$]*?[^$\s]?)\$/g,
         type: this.type,
         getAttributes: (match) => ({
           latex: match[1],
-          displayMode: true,
         }),
       }),
-      nodePasteRule({
-        find: /\$([^\s$]+?)\$/,
+    ];
+  },
+});
+
+// Block Math Extension ($$...$$)
+export const BlockMathExtension = Node.create<MathOptions>({
+  name: 'blockMath',
+
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+      katexOptions: {
+        displayMode: true,
+        throwOnError: false,
+      },
+    };
+  },
+
+  addAttributes() {
+    return {
+      latex: {
+        default: '',
+        parseHTML: (element) => element.getAttribute('data-latex'),
+        renderHTML: (attributes) => ({
+          'data-latex': attributes.latex,
+        }),
+      },
+    };
+  },
+
+  group: 'block',
+
+  atom: true,
+
+  selectable: true,
+
+  parseHTML() {
+    return [
+      {
+        tag: 'div[data-latex][data-display-mode="true"]',
+      },
+      {
+        tag: 'div[data-latex]',
+        getAttrs: (element) => {
+          const displayMode = element.getAttribute('data-display-mode');
+          if (displayMode === 'true') {
+            return null;
+          }
+          return false;
+        },
+      },
+    ];
+  },
+
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      'div',
+      mergeAttributes(
+        { 'data-latex': node.attrs.latex },
+        { 'data-display-mode': 'true' },
+        { class: 'math-block' },
+        this.options.HTMLAttributes,
+        HTMLAttributes
+      ),
+    ];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(MathComponent);
+  },
+
+  addCommands() {
+    return {
+      insertBlockMath:
+        ({ latex }) =>
+        ({ commands }) => {
+          return commands.insertContent({
+            type: this.name,
+            attrs: { latex },
+          });
+        },
+    };
+  },
+
+  addInputRules() {
+    return [
+      nodeInputRule({
+        find: /^\$\$([^$]*?)\$\$\s$/,
         type: this.type,
         getAttributes: (match) => ({
           latex: match[1],
-          displayMode: false,
+        }),
+      }),
+    ];
+  },
+
+  addPasteRules() {
+    return [
+      nodePasteRule({
+        find: /\$\$([^$]*?)\$\$/g,
+        type: this.type,
+        getAttributes: (match) => ({
+          latex: match[1],
         }),
       }),
     ];

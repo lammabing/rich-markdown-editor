@@ -53,6 +53,8 @@ function EmojiNodeComponent({ node, selected, updateAttributes }: EmojiNodeProps
       >
         {emoji}
       </span>
+      {/* Hidden span to store emoji data for HTML serialization */}
+      <span style={{ display: 'none' }} data-emoji-value={emoji} />
       {showPicker && (
         <div
           style={{
@@ -124,8 +126,10 @@ export const EmojiExtension = Node.create({
     return {
       emoji: {
         default: '😀',
-        parseHTML: (element) => element.textContent || '😀',
-        renderHTML: () => ({}),
+        parseHTML: (element) => element.getAttribute('data-emoji') || element.textContent || '😀',
+        renderHTML: (attributes) => ({
+          'data-emoji': attributes.emoji,
+        }),
       },
     };
   },
@@ -145,10 +149,10 @@ export const EmojiExtension = Node.create({
     return [
       'span',
       mergeAttributes(
-        { 'data-emoji': '' },
+        { 'data-emoji': node.attrs.emoji },
+        { class: 'emoji' },
         HTMLAttributes
       ),
-      node.attrs.emoji,
     ];
   },
 

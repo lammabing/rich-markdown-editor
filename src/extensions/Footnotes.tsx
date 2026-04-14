@@ -36,19 +36,24 @@ function FootnoteNodeComponent({ node, selected }: FootnoteNodeProps) {
       >
         [{footnoteLabel}]
       </sup>
+      {/* Hidden span to store footnote data for HTML serialization */}
+      <span style={{ display: 'none' }} data-footnote-id={footnoteId} data-footnote-label={footnoteLabel} />
     </NodeViewWrapper>
   );
 }
 
 function FootnoteDefinitionComponent({ node, selected }: FootnoteNodeProps) {
   const footnoteId = node.attrs.footnoteId;
-  const footnoteContent = node.attrs.footnoteContent || '';
+  const contentRef = (element: HTMLDivElement | null) => {
+    if (element && !element.hasChildNodes()) {
+      element.setAttribute('data-placeholder', 'Footnote content...');
+    }
+  };
 
   return (
     <NodeViewWrapper
       as="div"
       className="footnote-definition"
-      contentEditable={true}
       style={{
         backgroundColor: selected ? '#e8f0fe' : 'transparent',
         padding: '4px',
@@ -59,7 +64,8 @@ function FootnoteDefinitionComponent({ node, selected }: FootnoteNodeProps) {
         color: '#666',
       }}
     >
-      <sup>{footnoteId}.</sup> {footnoteContent}
+      <sup style={{ color: '#0366d6', marginRight: '0.5em', cursor: 'pointer' }}>[{footnoteId}]</sup>
+      <div contentEditable={true} suppressContentEditableWarning ref={contentRef} />
     </NodeViewWrapper>
   );
 }
@@ -119,7 +125,6 @@ export const FootnoteReference = Node.create({
         { 'data-footnote-label': node.attrs.footnoteLabel },
         HTMLAttributes
       ),
-      `[${node.attrs.footnoteLabel || node.attrs.footnoteId}]`,
     ];
   },
 
@@ -147,7 +152,7 @@ export const FootnoteReference = Node.create({
 export const FootnoteDefinition = Node.create({
   name: 'footnoteDefinition',
 
-  content: 'text*',
+  content: 'block+',
 
   addAttributes() {
     return {
@@ -157,11 +162,6 @@ export const FootnoteDefinition = Node.create({
         renderHTML: (attributes) => ({
           'data-footnote-id': attributes.footnoteId,
         }),
-      },
-      footnoteContent: {
-        default: '',
-        parseHTML: (element) => element.textContent,
-        renderHTML: () => ({}),
       },
     };
   },

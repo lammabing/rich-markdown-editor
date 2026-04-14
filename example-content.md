@@ -16,16 +16,16 @@ You can format text in various ways:
 
 ### Colored Text
 
-Use slash commands to add color:
+Use slash commands to add color, or use HTML span tags with inline styles:
 
-- `/red` - This text is red
-- `/green` - This text is green  
-- `/blue` - This text is blue
-- `/yellow` - This text is yellow
-- `/orange` - This text is orange
-- `/purple` - This text is purple
-- `/pink` - This text is pink
-- `/gray` - This text is gray
+- <span style="color: #dc2626">This text is red</span> (using `/red` command)
+- <span style="color: #16a34a">This text is green</span> (using `/green` command)
+- <span style="color: #2563eb">This text is blue</span> (using `/blue` command)
+- <span style="color: #ca8a04">This text is yellow</span> (using `/yellow` command)
+- <span style="color: #ea580c">This text is orange</span> (using `/orange` command)
+- <span style="color: #9333ea">This text is purple</span> (using `/purple` command)
+- <span style="color: #db2777">This text is pink</span> (using `/pink` command)
+- <span style="color: #4b5563">This text is gray</span> (using `/gray` command)
 
 ---
 

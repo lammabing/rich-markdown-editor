@@ -55,7 +55,6 @@ function AlertNodeComponent({ node, selected }: AlertNodeProps) {
     <NodeViewWrapper
       as="div"
       className={`alert-node alert-${alertType}`}
-      contentEditable={false}
       style={{
         backgroundColor: selected ? '#e8f0fe' : config.bg,
         borderLeft: `4px solid ${config.border}`,
@@ -108,7 +107,7 @@ export const AlertExtension = Node.create({
 
   group: 'block',
 
-  content: 'paragraph+',
+  content: 'block+',
 
   addAttributes() {
     return {

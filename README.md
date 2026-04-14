@@ -263,6 +263,10 @@ $$
 - `/inline-math` - Insert inline LaTeX equation
 - `/block-math` - Insert block LaTeX equation
 
+**Direct Input:**
+- Type `$latex$` in the editor to create inline math (e.g., `$E=mc^2$`)
+- Type `$$latex$$` at the start of a line to create block math
+
 **Common LaTeX Examples:**
 
 | Description | LaTeX |
@@ -479,30 +483,44 @@ markdown-editor/
 ├── src/
 │   ├── components/
 │   │   ├── Editor/
-│   │   │   ├── Editor.tsx       # Main editor component
-│   │   │   ├── Editor.css       # Editor styles
+│   │   │   ├── Editor.tsx # Main editor component
+│   │   │   ├── Editor.css # Editor styles
 │   │   │   └── index.ts
+│   │   ├── Toolbar/
+│   │   │   ├── Toolbar.tsx # Editor toolbar
+│   │   │   └── Toolbar.css
+│   │   ├── FileMenu/
+│   │   │   ├── FileMenu.tsx # File operations menu
+│   │   │   └── FileMenu.css
 │   │   └── SlashCommand/
-│   │       ├── SlashCommandList.tsx  # Command menu UI
+│   │       ├── SlashCommandList.tsx # Command menu UI
 │   │       ├── SlashCommand.css
 │   │       └── index.ts
 │   ├── extensions/
-│   │   ├── MathExtension.tsx    # KaTeX math support
-│   │   ├── Highlight.ts         # Highlight mark
-│   │   ├── CriticMarkup.ts      # Critic markup
-│   │   ├── Footnotes.tsx        # Footnotes
-│   │   ├── AlertExtension.tsx   # Alerts/callouts
-│   │   ├── EmojiExtension.tsx   # Emoji support
+│   │   ├── MathExtension.tsx # KaTeX math (inline & block)
+│   │   ├── Highlight.ts # Highlight mark
+│   │   ├── CriticMarkup.ts # Critic markup
+│   │   ├── Footnotes.tsx # Footnotes
+│   │   ├── AlertExtension.tsx # Alerts/callouts
+│   │   ├── EmojiExtension.tsx # Emoji support
 │   │   ├── HTMLBlockExtension.tsx # HTML blocks
+│   │   ├── HelpExtension.tsx # Help panel
 │   │   ├── SlashCommandExtension.ts
-│   │   └── slashCommand.ts      # Command definitions
+│   │   └── slashCommand.ts # Command definitions
+│   ├── hooks/
+│   │   └── useKeyboardShortcuts.ts # Keyboard shortcuts hook
+│   ├── utils/
+│   │   └── fileUtils.ts # HTML↔Markdown conversion
 │   ├── tests/
 │   │   ├── Editor.test.tsx
 │   │   ├── SlashCommandList.test.tsx
+│   │   ├── SlashCommandExtension.test.ts
 │   │   ├── colorCommands.test.ts
-│   │   ├── phase2.test.ts       # Tables, tasks, code
-│   │   ├── phase3.test.ts       # Math, highlight, footnotes
-│   │   └── phase4.test.ts       # Alerts, emoji, HTML
+│   │   ├── slashCommand.test.ts
+│   │   ├── mathAndCode.test.ts # Math & code rendering tests
+│   │   ├── phase2.test.ts # Tables, tasks, code
+│   │   ├── phase3.test.ts # Math, highlight, footnotes
+│   │   └── phase4.test.ts # Alerts, emoji, HTML
 │   └── App.tsx
 ├── package.json
 ├── vite.config.ts
@@ -662,7 +680,7 @@ npm run test:watch  # Watch mode
 npm run test:ui     # Open Vitest UI
 ```
 
-**Test Coverage**: 111 tests across 8 test files
+**Test Coverage**: 148 tests across 9 test files
 
 ---
 

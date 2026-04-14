@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Color from '@tiptap/extension-color';
@@ -14,21 +14,53 @@ import TaskItem from '@tiptap/extension-task-item';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import CharacterCount from '@tiptap/extension-character-count';
 import { common, createLowlight } from 'lowlight';
-import { MathExtension } from '../../extensions/MathExtension';
+import { MathExtension, BlockMathExtension } from '../../extensions/MathExtension';
 import { Highlight } from '../../extensions/Highlight';
 import { CriticDeletion, CriticInsertion, CriticHighlight } from '../../extensions/CriticMarkup';
 import { FootnoteReference, FootnoteDefinition } from '../../extensions/Footnotes';
 import { AlertExtension } from '../../extensions/AlertExtension';
+import { AlertParserExtension } from '../../extensions/AlertParserExtension';
 import { EmojiExtension } from '../../extensions/EmojiExtension';
 import { HTMLBlockExtension } from '../../extensions/HTMLBlockExtension';
 import { HelpExtension } from '../../extensions/HelpExtension';
-import SlashCommandExtension from '../../extensions/SlashCommandExtension.js';
+import SlashCommandExtension from '../../extensions/SlashCommandExtension';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 import { htmlToMarkdown } from '../../utils/fileUtils';
 import './Editor.css';
 
 const lowlight = createLowlight(common);
+
+/**
+ * Convert data-color attributes to inline styles for proper rendering
+ */
+function applyDataColors(html: string): string {
+  if (typeof window === 'undefined') return html;
+  
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    
+    // Find all spans with data-color attribute
+    const spans = doc.querySelectorAll('span[data-color]');
+    spans.forEach(span => {
+      const color = span.getAttribute('data-color');
+      if (color && span instanceof HTMLElement) {
+        // Apply as inline style
+        span.style.color = color;
+      }
+    });
+    
+    return doc.body.innerHTML;
+  } catch {
+    // Fallback to regex if parsing fails
+    return html.replace(/<span([^>]*)data-color="([^"]*)"([^>]*)>/gi, 
+      (_match, before, color, after) => {
+        return `<span${before}${after} style="color: ${color}">`;
+      }
+    );
+  }
+}
 
 export interface EditorProps {
   content?: string;
@@ -37,6 +69,10 @@ export interface EditorProps {
 }
 
 export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
+  const isInitialMount = useRef(true);
+  const isUpdatingFromProp = useRef(false);
+  const prevContentRef = useRef('');
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -44,6 +80,7 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
           levels: [1, 2, 3, 4, 5, 6],
         },
         codeBlock: false,
+        underline: false, // Disable StarterKit's underline since we're using the separate extension
       }),
       Color,
       TextStyle,
@@ -65,6 +102,7 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
         limit: null,
       }),
       MathExtension,
+      BlockMathExtension,
       Highlight,
       CriticDeletion,
       CriticInsertion,
@@ -72,6 +110,7 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
       FootnoteReference,
       FootnoteDefinition,
       AlertExtension,
+      AlertParserExtension,
       EmojiExtension,
       HTMLBlockExtension,
       HelpExtension,
@@ -80,9 +119,15 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
       }),
       SlashCommandExtension,
     ],
-    content,
+    content: applyDataColors(content),
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML());
+      // Don't trigger onChange if we're updating from a prop change
+      if (isUpdatingFromProp.current) {
+        return;
+      }
+      const newHTML = editor.getHTML();
+      prevContentRef.current = newHTML;
+      onChange?.(newHTML);
     },
     editorProps: {
       attributes: {
@@ -91,13 +136,27 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
     },
   });
 
-  // Update editor content when content prop changes
+  // Update editor content when content prop changes (e.g., opening a file)
   useEffect(() => {
-    if (editor && content && editor.isEditable) {
-      const currentContent = editor.getHTML();
-      if (currentContent !== content && content !== '<p></p>') {
-        editor.commands.setContent(content);
-      }
+    if (!editor) return;
+
+    // Skip initial mount since useEditor already sets the content
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      prevContentRef.current = editor.getHTML();
+      return;
+    }
+
+    // Only update if content actually changed from external source
+    const processedContent = applyDataColors(content);
+    if (content && processedContent !== prevContentRef.current) {
+      isUpdatingFromProp.current = true;
+      editor.commands.setContent(processedContent);
+      prevContentRef.current = processedContent;
+      // Reset the flag after the update is complete
+      requestAnimationFrame(() => {
+        isUpdatingFromProp.current = false;
+      });
     }
   }, [content, editor]);
 
@@ -105,13 +164,16 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
   useKeyboardShortcuts({
     onSave: () => {
       if (!editor) return;
+      const filename = prompt('Enter filename:', 'document.md');
+      if (!filename) return; // User cancelled
+      
       const html = editor.getHTML();
       const markdown = htmlToMarkdown(html);
       const blob = new Blob([markdown], { type: 'text/markdown' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'document.md';
+      link.download = filename;
       link.click();
       URL.revokeObjectURL(url);
     },
@@ -145,10 +207,10 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
       </div>
       <div className="editor-statusbar">
         <span className="status-item">
-          {editor.storage.characterCount?.words() || 0} words
+          {editor.storage.characterCount ? editor.storage.characterCount.words() : 0} words
         </span>
         <span className="status-item">
-          {editor.storage.characterCount?.characters() || 0} characters
+          {editor.storage.characterCount ? editor.storage.characterCount.characters() : 0} characters
         </span>
       </div>
     </div>

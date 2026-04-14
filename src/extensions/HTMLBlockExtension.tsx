@@ -83,9 +83,9 @@ export const HTMLBlockExtension = Node.create({
 
   group: 'block',
 
-  atom: true,
-
   selectable: true,
+
+  atom: true,
 
   addAttributes() {
     return {

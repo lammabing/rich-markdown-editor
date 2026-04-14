@@ -9,9 +9,12 @@ interface FileMenuProps {
 
 export function FileMenu({ editor, onOpenFile }: FileMenuProps) {
   const handleSave = () => {
+    const filename = prompt('Enter filename:', 'document.md');
+    if (!filename) return; // User cancelled
+    
     const html = editor.getHTML();
     const markdown = htmlToMarkdown(html);
-    downloadFile(markdown, 'document.md', 'text/markdown');
+    downloadFile(markdown, filename, 'text/markdown');
   };
 
   const handleOpenClick = () => {
