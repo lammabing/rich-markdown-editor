@@ -79,24 +79,36 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
   const isUpdatingFromProp = useRef(false);
   const prevContentRef = useRef('');
   const onChangeRef = useRef(onChange);
-  const pendingUpdateRef = useRef(false);
+  const latestHtmlRef = useRef('');
+  const mountedRef = useRef(true);
 
   // Keep ref in sync with onChange prop
   useEffect(() => {
     onChangeRef.current = onChange;
   }, [onChange]);
 
-  // Debounced content update
+  // Cleanup on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  // Debounced content update - stores latest HTML to avoid losing content on fast typing
   const scheduleUpdate = useCallback((html: string) => {
-    if (pendingUpdateRef.current) return;
+    latestHtmlRef.current = html;
     
-    pendingUpdateRef.current = true;
+    if (!mountedRef.current) return;
     
     // Use requestAnimationFrame for smooth batching
     requestAnimationFrame(() => {
-      pendingUpdateRef.current = false;
-      prevContentRef.current = html;
-      onChangeRef.current?.(html);
+      if (!mountedRef.current) return;
+      
+      const htmlToNotify = latestHtmlRef.current;
+      if (htmlToNotify && htmlToNotify !== prevContentRef.current) {
+        prevContentRef.current = htmlToNotify;
+        onChangeRef.current?.(htmlToNotify);
+      }
     });
   }, []);
 
