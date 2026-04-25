@@ -353,17 +353,29 @@
   display: block !important;
   margin: 1.5em 0;
   text-align: center;
-  padding: 1em;
-  background-color: #f9fafb;
-  border-radius: 8px;
+  padding: 1.5em;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 12px;
   width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+}
+
+.math-node.math-block .katex {
+  color: #f1f5f9;
+  font-size: 1.1em;
 }
 
 .math-node.math-inline {
   margin: 0 0.2em;
-  padding: 0 0.25em;
+  padding: 0.2em 0.4em;
   border-radius: 4px;
   background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+.math-node.math-inline .katex {
+  color: #1f2937;
 }
 
 /* Highlight mark styles */
@@ -561,8 +573,10 @@
   background: #94a3b8;
 }
 
-/* Smooth transitions */
-.ProseMirror * {
+/* Smooth transitions - removed universal selector for performance */
+.ProseMirror a,
+.ProseMirror button,
+.ProseMirror input[type="checkbox"] {
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
@@ -677,5 +691,25 @@
   .help-node {
     background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
     border-color: #475569;
+  }
+
+  /* Math blocks in dark mode - keep dark background with light text */
+  .math-node.math-block {
+    background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+    border-color: #475569;
+  }
+
+  .math-node.math-block .katex {
+    color: #f1f5f9;
+  }
+
+  /* Inline math in dark mode */
+  .math-node.math-inline {
+    background-color: #334155;
+    border-color: #475569;
+  }
+
+  .math-node.math-inline .katex {
+    color: #e2e8f0;
   }
 }

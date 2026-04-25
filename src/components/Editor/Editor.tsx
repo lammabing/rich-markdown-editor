@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Color from '@tiptap/extension-color';
@@ -33,14 +33,20 @@ const lowlight = createLowlight(common);
 
 /**
  * Convert data-color attributes to inline styles for proper rendering
+ * Only processes the HTML if it contains data-color attributes
  */
 function applyDataColors(html: string): string {
   if (typeof window === 'undefined') return html;
   
+  // Quick check: if no data-color attributes, return as-is
+  if (!html.includes('data-color')) {
+    return html;
+  }
+
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    
+
     // Find all spans with data-color attribute
     const spans = doc.querySelectorAll('span[data-color]');
     spans.forEach(span => {
@@ -50,11 +56,11 @@ function applyDataColors(html: string): string {
         span.style.color = color;
       }
     });
-    
+
     return doc.body.innerHTML;
   } catch {
     // Fallback to regex if parsing fails
-    return html.replace(/<span([^>]*)data-color="([^"]*)"([^>]*)>/gi, 
+    return html.replace(/<span([^>]*)data-color="([^"]*)"([^>]*)>/gi,
       (_match, before, color, after) => {
         return `<span${before}${after} style="color: ${color}">`;
       }
@@ -72,6 +78,27 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
   const isInitialMount = useRef(true);
   const isUpdatingFromProp = useRef(false);
   const prevContentRef = useRef('');
+  const onChangeRef = useRef(onChange);
+  const pendingUpdateRef = useRef(false);
+
+  // Keep ref in sync with onChange prop
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  // Debounced content update
+  const scheduleUpdate = useCallback((html: string) => {
+    if (pendingUpdateRef.current) return;
+    
+    pendingUpdateRef.current = true;
+    
+    // Use requestAnimationFrame for smooth batching
+    requestAnimationFrame(() => {
+      pendingUpdateRef.current = false;
+      prevContentRef.current = html;
+      onChangeRef.current?.(html);
+    });
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -126,8 +153,7 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
         return;
       }
       const newHTML = editor.getHTML();
-      prevContentRef.current = newHTML;
-      onChange?.(newHTML);
+      scheduleUpdate(newHTML);
     },
     editorProps: {
       attributes: {
