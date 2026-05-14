@@ -253,6 +253,14 @@ interface User {
 
 ### Math/LaTeX
 
+#### Toolbar Buttons
+
+Click the math buttons in the toolbar to insert equations:
+- **Inline Math** (∑) - Insert inline equations within text
+- **Block Math** (∫) - Insert displayed equations on their own line
+
+Both buttons open a dialog where you can enter LaTeX syntax.
+
 #### Inline Math
 
 Use single dollar signs for inline equations:
@@ -699,7 +707,7 @@ npm run test:watch  # Watch mode
 npm run test:ui     # Open Vitest UI
 ```
 
-**Test Coverage**: 148 tests across 9 test files
+**Test Coverage**: 164 tests across 9 test files
 
 ---
 
