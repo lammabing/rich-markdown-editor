@@ -103,16 +103,15 @@ export function htmlToMarkdown(html: string): string {
   // Paragraphs
   md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/gi, '$1\n\n');
 
-  // Lists - unordered
+  // Lists - unordered (use lookbehind to exclude </li> from content)
   md = md.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/gi, (match, content) => {
-    return content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '- $1\n');
+    return content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (m, liContent) => `- ${liContent}\n`);
   });
-  md = md.replace(/^-([\s\S]*?)\n/gm, '-$1');
 
-  // Lists - ordered
+  // Lists - ordered (use lookbehind to exclude </li> from content)
   md = md.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, (match, content, offset, string) => {
     let count = 1;
-    return content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, () => `${count++}. $1\n`);
+    return content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (m, liContent) => `${count++}. ${liContent}\n`);
   });
 
   // Task lists

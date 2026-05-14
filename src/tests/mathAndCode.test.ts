@@ -433,4 +433,26 @@ describe('Round-trip Conversion', () => {
     const backToMd = htmlToMarkdown(html);
     expect(backToMd).toContain('red text');
   });
+
+  it('preserves numbered lists through conversion cycle', () => {
+    const originalMd = '1. First item\n2. Second item\n3. Third item';
+    const html = markdownToHtml(originalMd);
+    const backToMd = htmlToMarkdown(html);
+    expect(backToMd).toContain('1.');
+    expect(backToMd).toContain('First item');
+    expect(backToMd).toContain('2.');
+    expect(backToMd).toContain('Second item');
+    expect(backToMd).toContain('3.');
+    expect(backToMd).toContain('Third item');
+  });
+
+  it('preserves nested list items through conversion cycle', () => {
+    const originalMd = '1. First item\n   - nested item\n2. Second item';
+    const html = markdownToHtml(originalMd);
+    const backToMd = htmlToMarkdown(html);
+    expect(backToMd).toContain('1.');
+    expect(backToMd).toContain('First item');
+    expect(backToMd).toContain('2.');
+    expect(backToMd).toContain('Second item');
+  });
 });

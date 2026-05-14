@@ -195,8 +195,85 @@
     background-color: #4b5563;
   }
 
-  .toolbar button:hover:not(:disabled)::after {
-    background-color: #f3f4f6;
-    color: #1f2937;
-  }
+.toolbar button:hover:not(:disabled)::after {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Dialog styles */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  min-width: 320px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dialog h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dialog input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: monospace;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.dialog input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-buttons button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+}
+
+.dialog-buttons button:hover {
+  background-color: #f3f4f6;
+}
+
+.dialog-buttons button.primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.dialog-buttons button.primary:hover {
+  background-color: #2563eb;
+}
 }

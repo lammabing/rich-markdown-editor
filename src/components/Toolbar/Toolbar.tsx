@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Editor } from '@tiptap/react';
 import { FileMenu } from '../FileMenu/FileMenu';
 import './Toolbar.css';
@@ -5,16 +6,37 @@ import './Toolbar.css';
 interface ToolbarProps {
   editor: Editor;
   onOpenFile: (content: string) => void;
+  onNewDocument: () => void;
 }
 
-export function Toolbar({ editor, onOpenFile }: ToolbarProps) {
+export function Toolbar({ editor, onOpenFile, onNewDocument }: ToolbarProps) {
+  const [mathDialogOpen, setMathDialogOpen] = useState(false);
+  const [blockMathDialogOpen, setBlockMathDialogOpen] = useState(false);
+  const [mathInput, setMathInput] = useState('');
+
+  const insertMath = () => {
+    if (mathInput.trim()) {
+      editor.chain().focus().insertMath({ latex: mathInput.trim(), displayMode: false }).run();
+    }
+    setMathInput('');
+    setMathDialogOpen(false);
+  };
+
+  const insertBlockMath = () => {
+    if (mathInput.trim()) {
+      editor.chain().focus().insertBlockMath({ latex: mathInput.trim() }).run();
+    }
+    setMathInput('');
+    setBlockMathDialogOpen(false);
+  };
+
   if (!editor) {
     return null;
   }
 
   return (
     <div className="toolbar">
-      <FileMenu editor={editor} onOpenFile={onOpenFile} />
+      <FileMenu editor={editor} onOpenFile={onOpenFile} onNewDocument={onNewDocument} />
 
       <div className="toolbar-divider" />
 
@@ -160,10 +182,16 @@ export function Toolbar({ editor, onOpenFile }: ToolbarProps) {
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
         </button>
         <button
-          onClick={() => editor.chain().focus().insertMath({ latex: 'x^2', displayMode: false }).run()}
+          onClick={() => setMathDialogOpen(true)}
           title="Inline Math"
         >
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M4 18l4-12h4l4 12"></path><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+        </button>
+        <button
+          onClick={() => setBlockMathDialogOpen(true)}
+          title="Block Math"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line><line x1="8" y1="6" x2="16" y2="18"></line></svg>
         </button>
         <button
           onClick={() => editor.chain().focus().insertEmoji({ emoji: '😀' }).run()}
@@ -223,6 +251,50 @@ export function Toolbar({ editor, onOpenFile }: ToolbarProps) {
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
         </button>
       </div>
+      {mathDialogOpen && (
+        <div className="dialog-overlay" onClick={() => setMathDialogOpen(false)}>
+          <div className="dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Insert Inline Math</h3>
+            <input
+              type="text"
+              value={mathInput}
+              onChange={(e) => setMathInput(e.target.value)}
+              placeholder="Enter LaTeX (e.g., \frac{a}{b})"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') insertMath();
+                if (e.key === 'Escape') setMathDialogOpen(false);
+              }}
+            />
+            <div className="dialog-buttons">
+              <button onClick={() => setMathDialogOpen(false)}>Cancel</button>
+              <button onClick={insertMath} className="primary">Insert</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {blockMathDialogOpen && (
+        <div className="dialog-overlay" onClick={() => setBlockMathDialogOpen(false)}>
+          <div className="dialog" onClick={(e) => e.stopPropagation()}>
+            <h3>Insert Block Math</h3>
+            <input
+              type="text"
+              value={mathInput}
+              onChange={(e) => setMathInput(e.target.value)}
+              placeholder="Enter LaTeX (e.g., \int_0^1 x dx)"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') insertBlockMath();
+                if (e.key === 'Escape') setBlockMathDialogOpen(false);
+              }}
+            />
+            <div className="dialog-buttons">
+              <button onClick={() => setBlockMathDialogOpen(false)}>Cancel</button>
+              <button onClick={insertBlockMath} className="primary">Insert</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
