@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node --max-old-space-size=4096 node_modules/.bin/vite",
+    "dev": "echo 'NOTE: If the page appears stuck/blank, browser extensions (ad blockers, style changers, dark mode plugins) may interfere. Try Incognito mode.' && node --max-old-space-size=4096 node_modules/.bin/vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

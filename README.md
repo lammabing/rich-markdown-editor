@@ -253,14 +253,6 @@ interface User {
 
 ### Math/LaTeX
 
-#### Toolbar Buttons
-
-Click the math buttons in the toolbar to insert equations:
-- **Inline Math** (∑) - Insert inline equations within text
-- **Block Math** (∫) - Insert displayed equations on their own line
-
-Both buttons open a dialog where you can enter LaTeX syntax.
-
 #### Inline Math
 
 Use single dollar signs for inline equations:
@@ -707,7 +699,7 @@ npm run test:watch  # Watch mode
 npm run test:ui     # Open Vitest UI
 ```
 
-**Test Coverage**: 164 tests across 9 test files
+**Test Coverage**: 148 tests across 9 test files
 
 ---
 
@@ -717,6 +709,19 @@ npm run test:ui     # Open Vitest UI
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
+
+---
+
+## Troubleshooting
+
+### DarkReader Extension
+
+If the editor appears blank or doesn't respond to input, try disabling the **DarkReader** browser extension. DarkReader can interfere with React-based editors and cause rendering issues.
+
+**Solution:**
+1. Click the DarkReader icon in your browser toolbar
+2. Toggle it OFF for the editor page
+3. Or add the editor URL to DarkReader's exclusion list
 
 ---
 

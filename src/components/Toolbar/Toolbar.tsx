@@ -7,9 +7,11 @@ interface ToolbarProps {
   editor: Editor;
   onOpenFile: (content: string) => void;
   onNewDocument: () => void;
+  currentFileHandle?: FileSystemFileHandle | null;
+  onFileHandleChange?: (handle: FileSystemFileHandle | null) => void;
 }
 
-export function Toolbar({ editor, onOpenFile, onNewDocument }: ToolbarProps) {
+export function Toolbar({ editor, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange }: ToolbarProps) {
   const [mathDialogOpen, setMathDialogOpen] = useState(false);
   const [blockMathDialogOpen, setBlockMathDialogOpen] = useState(false);
   const [mathInput, setMathInput] = useState('');
@@ -36,7 +38,7 @@ export function Toolbar({ editor, onOpenFile, onNewDocument }: ToolbarProps) {
 
   return (
     <div className="toolbar">
-      <FileMenu editor={editor} onOpenFile={onOpenFile} onNewDocument={onNewDocument} />
+      <FileMenu editor={editor} onOpenFile={onOpenFile} onNewDocument={onNewDocument} currentFileHandle={currentFileHandle} onFileHandleChange={onFileHandleChange} />
 
       <div className="toolbar-divider" />
 

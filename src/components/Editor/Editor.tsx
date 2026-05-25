@@ -72,9 +72,12 @@ export interface EditorProps {
   content?: string;
   onChange?: (content: string) => void;
   onOpenFile?: (content: string) => void;
+  onNewDocument?: () => void;
+  currentFileHandle?: FileSystemFileHandle | null;
+  onFileHandleChange?: (handle: FileSystemFileHandle | null) => void;
 }
 
-export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
+export function Editor({ content = '', onChange, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange }: EditorProps) {
   const isInitialMount = useRef(true);
   const isUpdatingFromProp = useRef(false);
   const prevContentRef = useRef('');
@@ -187,7 +190,8 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
 
     // Only update if content actually changed from external source
     const processedContent = applyDataColors(content);
-    if (content && processedContent !== prevContentRef.current) {
+    const contentChanged = processedContent !== prevContentRef.current;
+    if (contentChanged) {
       isUpdatingFromProp.current = true;
       editor.commands.setContent(processedContent);
       prevContentRef.current = processedContent;
@@ -200,33 +204,84 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
-    onSave: () => {
+    onSave: async () => {
       if (!editor) return;
-      const filename = prompt('Enter filename:', 'document.md');
-      if (!filename) return; // User cancelled
       
-      const html = editor.getHTML();
-      const markdown = htmlToMarkdown(html);
-      const blob = new Blob([markdown], { type: 'text/markdown' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
-    },
-    onOpen: () => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.md,.markdown,.txt';
-      input.onchange = async (e) => {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (file && onOpenFile) {
-          const markdown = await file.text();
-          onOpenFile(markdown);
+      try {
+        const html = editor.getHTML();
+        const markdown = htmlToMarkdown(html);
+        
+        if (currentFileHandle) {
+          const writable = await currentFileHandle.createWritable();
+          await writable.write(markdown);
+          await writable.close();
+          return;
         }
-      };
-      input.click();
+        
+        if ('showSaveFilePicker' in window) {
+          const handle = await (window as any).showSaveFilePicker({
+            suggestedName: 'document.md',
+            types: [
+              {
+                description: 'Markdown files',
+                accept: { 'text/markdown': ['.md', '.markdown'] },
+              },
+            ],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(markdown);
+          await writable.close();
+          onFileHandleChange?.(handle);
+        } else {
+          const filename = prompt('Enter filename:', 'document.md');
+          if (!filename) return;
+          const blob = new Blob([markdown], { type: 'text/markdown' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.error('Save error:', err);
+        }
+      }
+    },
+    onOpen: async () => {
+      try {
+        if ('showOpenFilePicker' in window) {
+          const [handle] = await (window as any).showOpenFilePicker({
+            types: [
+              {
+                description: 'Markdown files',
+                accept: { 'text/markdown': ['.md', '.markdown', '.txt'] },
+              },
+            ],
+          });
+          const file = await handle.getFile();
+          const markdown = await file.text();
+          onOpenFile?.(markdown);
+          onFileHandleChange?.(handle);
+        } else {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.md,.markdown,.txt';
+          input.onchange = async (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if (file && onOpenFile) {
+              const markdown = await file.text();
+              onOpenFile(markdown);
+            }
+          };
+          input.click();
+        }
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.error('Open error:', err);
+        }
+      }
     },
     onPrint: () => {
       window.print();
@@ -239,7 +294,13 @@ export function Editor({ content = '', onChange, onOpenFile }: EditorProps) {
 
   return (
     <div className="editor-wrapper">
-      <Toolbar editor={editor} onOpenFile={onOpenFile || (() => {})} />
+      <Toolbar 
+        editor={editor} 
+        onOpenFile={onOpenFile || (() => {})} 
+        onNewDocument={onNewDocument || (() => {})} 
+        currentFileHandle={currentFileHandle}
+        onFileHandleChange={onFileHandleChange}
+      />
       <div className="editor-container">
         <EditorContent editor={editor} />
       </div>
