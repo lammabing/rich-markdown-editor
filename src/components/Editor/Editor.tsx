@@ -1,5 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react';
-import { useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Color from '@tiptap/extension-color';
@@ -27,6 +27,7 @@ import SlashCommandExtension from '../../extensions/SlashCommandExtension';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 import { htmlToMarkdown } from '../../utils/fileUtils';
+import { FONTS, loadGoogleFont } from '../../utils/fontLoader';
 import './Editor.css';
 
 const lowlight = createLowlight(common);
@@ -84,6 +85,28 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
   const onChangeRef = useRef(onChange);
   const latestHtmlRef = useRef('');
   const mountedRef = useRef(true);
+
+  const defaultFont = FONTS.find(f => f.family === 'Inter') || FONTS[0];
+  const [fontFamily, setFontFamily] = useState<string>(() => {
+    return localStorage.getItem('editor-font') || defaultFont.cssFamily;
+  });
+
+  useEffect(() => {
+    const storedFamily = localStorage.getItem('editor-font') || FONTS[0].cssFamily;
+    const storedFont = FONTS.find(f => f.cssFamily === storedFamily);
+    if (storedFont) {
+      loadGoogleFont(storedFont.family);
+    }
+  }, []);
+
+  const handleFontFamilyChange = useCallback((cssFamily: string) => {
+    setFontFamily(cssFamily);
+    localStorage.setItem('editor-font', cssFamily);
+    const font = FONTS.find(f => f.cssFamily === cssFamily);
+    if (font) {
+      loadGoogleFont(font.family);
+    }
+  }, []);
 
   // Keep ref in sync with onChange prop
   useEffect(() => {
@@ -293,13 +316,15 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
   }
 
   return (
-    <div className="editor-wrapper">
+    <div className="editor-wrapper" style={{ fontFamily }}>
       <Toolbar 
         editor={editor} 
         onOpenFile={onOpenFile || (() => {})} 
         onNewDocument={onNewDocument || (() => {})} 
         currentFileHandle={currentFileHandle}
         onFileHandleChange={onFileHandleChange}
+        fontFamily={fontFamily}
+        onFontFamilyChange={handleFontFamilyChange}
       />
       <div className="editor-container">
         <EditorContent editor={editor} />

@@ -7,7 +7,6 @@
   flex-direction: column;
   height: 100vh;
   background-color: #ffffff;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
 }
 
@@ -48,7 +47,6 @@
 /* TipTap editor core styles */
 .ProseMirror {
   outline: none;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   line-height: 1.8;
   color: #1f2937;
@@ -70,7 +68,6 @@
 .ProseMirror h4,
 .ProseMirror h5,
 .ProseMirror h6 {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   line-height: 1.2;
   font-weight: 700;
   margin-top: 1.5em;

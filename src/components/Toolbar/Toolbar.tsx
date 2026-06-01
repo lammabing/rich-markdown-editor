@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Editor } from '@tiptap/react';
 import { FileMenu } from '../FileMenu/FileMenu';
+import { FONTS } from '../../utils/fontLoader';
 import './Toolbar.css';
 
 interface ToolbarProps {
@@ -9,9 +10,11 @@ interface ToolbarProps {
   onNewDocument: () => void;
   currentFileHandle?: FileSystemFileHandle | null;
   onFileHandleChange?: (handle: FileSystemFileHandle | null) => void;
+  fontFamily?: string;
+  onFontFamilyChange?: (cssFamily: string) => void;
 }
 
-export function Toolbar({ editor, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange }: ToolbarProps) {
+export function Toolbar({ editor, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange, fontFamily, onFontFamilyChange }: ToolbarProps) {
   const [mathDialogOpen, setMathDialogOpen] = useState(false);
   const [blockMathDialogOpen, setBlockMathDialogOpen] = useState(false);
   const [mathInput, setMathInput] = useState('');
@@ -252,6 +255,27 @@ export function Toolbar({ editor, onOpenFile, onNewDocument, currentFileHandle, 
         >
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
         </button>
+      </div>
+
+      <div className="toolbar-divider" />
+
+      <div className="toolbar-group toolbar-font" title="Font Family">
+        <select
+          className="font-select"
+          value={fontFamily || ''}
+          onChange={(e) => onFontFamilyChange?.(e.target.value)}
+          title="Editor Font"
+        >
+          {(['sans-serif', 'serif', 'monospace'] as const).map(category => (
+            <optgroup key={category} label={category === 'sans-serif' ? 'Sans Serif' : category === 'serif' ? 'Serif' : 'Monospace'}>
+              {FONTS.filter(f => f.category === category).map(font => (
+                <option key={font.family} value={font.cssFamily} style={{ fontFamily: font.cssFamily }}>
+                  {font.name}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
       </div>
       {mathDialogOpen && (
         <div className="dialog-overlay" onClick={() => setMathDialogOpen(false)}>

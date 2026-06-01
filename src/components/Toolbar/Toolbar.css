@@ -134,6 +134,37 @@
   color: #2563eb;
 }
 
+/* Font select */
+.toolbar-font {
+  gap: 2px;
+}
+
+.font-select {
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  min-width: 130px;
+  max-width: 160px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+.font-select:hover {
+  border-color: #d1d5db;
+}
+
+.font-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
 /* Emoji buttons */
 .toolbar button:not(.color-btn) {
   font-size: 16px;
@@ -193,6 +224,20 @@
 
   .toolbar-divider {
     background-color: #4b5563;
+  }
+
+  .font-select {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+
+  .font-select:hover {
+    border-color: #6b7280;
+  }
+
+  .font-select:focus {
+    border-color: #3b82f6;
   }
 
 .toolbar button:hover:not(:disabled)::after {
