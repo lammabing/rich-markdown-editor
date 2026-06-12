@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseKeyboardShortcutsOptions {
   onSave?: () => void;
@@ -7,9 +7,16 @@ interface UseKeyboardShortcutsOptions {
 }
 
 export function useKeyboardShortcuts({ onSave, onOpen, onPrint }: UseKeyboardShortcutsOptions) {
+  const onSaveRef = useRef(onSave);
+  const onOpenRef = useRef(onOpen);
+  const onPrintRef = useRef(onPrint);
+
+  useEffect(() => { onSaveRef.current = onSave; }, [onSave]);
+  useEffect(() => { onOpenRef.current = onOpen; }, [onOpen]);
+  useEffect(() => { onPrintRef.current = onPrint; }, [onPrint]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Check for Ctrl/Cmd key
       const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
       const modKey = isMac ? e.metaKey : e.ctrlKey;
 
@@ -17,15 +24,15 @@ export function useKeyboardShortcuts({ onSave, onOpen, onPrint }: UseKeyboardSho
         switch (e.key.toLowerCase()) {
           case 's':
             e.preventDefault();
-            onSave?.();
+            onSaveRef.current?.();
             break;
           case 'o':
             e.preventDefault();
-            onOpen?.();
+            onOpenRef.current?.();
             break;
           case 'p':
             e.preventDefault();
-            onPrint?.();
+            onPrintRef.current?.();
             break;
         }
       }
@@ -33,5 +40,5 @@ export function useKeyboardShortcuts({ onSave, onOpen, onPrint }: UseKeyboardSho
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onSave, onOpen, onPrint]);
+  }, []);
 }

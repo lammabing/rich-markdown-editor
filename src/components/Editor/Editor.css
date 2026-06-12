@@ -44,6 +44,31 @@
   gap: 4px;
 }
 
+.autosave-status {
+  margin-right: auto;
+  font-weight: 500;
+}
+
+.autosave-status.autosave-idle {
+  color: transparent;
+}
+
+.autosave-status.autosave-saving {
+  color: #d97706;
+}
+
+.autosave-status.autosave-saved {
+  color: #059669;
+}
+
+.autosave-status.autosave-error {
+  color: #dc2626;
+}
+
+.autosave-status.autosave-unsaved {
+  color: #9ca3af;
+}
+
 /* TipTap editor core styles */
 .ProseMirror {
   outline: none;

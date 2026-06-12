@@ -9,6 +9,7 @@ A modern, feature-rich markdown editor with real-time in-place rendering, slash 
 - **Slash Commands**: Type `/` to access a command palette with all available commands
 - **In-place Editing**: No split-pane needed - edit and preview in the same view
 - **Interactive Elements**: Clickable checkboxes, emoji picker, resizable tables
+- **Autosave**: Draft recovery via localStorage (all browsers) + file autosave via File System API (Chrome/Edge)
 
 ### Supported Markdown & Extensions
 
@@ -71,6 +72,15 @@ npm run preview  # Preview production build
 - Click the **💾 Save** button in the toolbar
 - Or press `Ctrl+S` (Windows/Linux) / `Cmd+S` (Mac)
 - Downloads your document as `document.md`
+
+### Autosave
+
+Content is automatically saved every **30 seconds** after you stop typing, and on page close:
+
+- **Draft Recovery (all browsers)**: HTML content is saved to `localStorage`. On your next visit, a banner offers to restore unsaved changes. Works in Chrome, Firefox, Safari, and Edge.
+- **File Autosave (Chrome/Edge only)**: If you've opened or saved a `.md` file using the File System Access API, changes are written directly to disk. The file handle is persisted across sessions via IndexedDB.
+- **Status Indicator**: The status bar shows the current autosave state: *Unsaved changes*, *Saving...*, *Saved*, or *Save error*.
+- **Draft cleared** on explicit `Ctrl+S` / file open / new document.
 
 ### Opening Documents
 
@@ -527,9 +537,11 @@ markdown-editor/
 │   │   ├── SlashCommandExtension.ts
 │   │   └── slashCommand.ts # Command definitions
 │   ├── hooks/
-│   │   └── useKeyboardShortcuts.ts # Keyboard shortcuts hook
+│   │   ├── useKeyboardShortcuts.ts # Keyboard shortcuts hook
+│   │   └── useAutosave.ts         # Autosave (localStorage + File System API)
 │   ├── utils/
-│   │   └── fileUtils.ts # HTML↔Markdown conversion
+│   │   ├── fileUtils.ts           # HTML↔Markdown conversion
+│   │   └── fileHandlePersistence.ts # IndexedDB persistence for file handles
 │   ├── tests/
 │   │   ├── Editor.test.tsx
 │   │   ├── SlashCommandList.test.tsx
@@ -699,16 +711,18 @@ npm run test:watch  # Watch mode
 npm run test:ui     # Open Vitest UI
 ```
 
-**Test Coverage**: 148 tests across 9 test files
+**Test Coverage**: 164 tests across 9 test files
 
 ---
 
 ## Browser Support
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+- Chrome (latest) — full support including File System Access API
+- Firefox (latest) — no File System API (handled gracefully)
+- Safari (latest) — no File System API (handled gracefully)
+- Edge (latest) — full support including File System Access API
+
+**Note:** File system auto-save requires the File System Access API (Chrome/Edge only). The localStorage draft recovery works in all browsers.
 
 ---
 

@@ -28,6 +28,7 @@ import { Toolbar } from '../Toolbar/Toolbar';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
 import { htmlToMarkdown } from '../../utils/fileUtils';
 import { FONTS, loadGoogleFont } from '../../utils/fontLoader';
+import type { AutosaveStatus } from '../../hooks/useAutosave';
 import './Editor.css';
 
 const lowlight = createLowlight(common);
@@ -76,9 +77,19 @@ export interface EditorProps {
   onNewDocument?: () => void;
   currentFileHandle?: FileSystemFileHandle | null;
   onFileHandleChange?: (handle: FileSystemFileHandle | null) => void;
+  autosaveStatus?: AutosaveStatus;
+  onAutosaveClearDraft?: () => void;
 }
 
-export function Editor({ content = '', onChange, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange }: EditorProps) {
+const AUTOSAVE_LABELS: Record<AutosaveStatus, string> = {
+  idle: '',
+  saving: 'Saving...',
+  saved: 'Saved',
+  error: 'Save error',
+  unsaved: 'Unsaved changes',
+};
+
+export function Editor({ content = '', onChange, onOpenFile, onNewDocument, currentFileHandle, onFileHandleChange, autosaveStatus = 'idle', onAutosaveClearDraft }: EditorProps) {
   const isInitialMount = useRef(true);
   const isUpdatingFromProp = useRef(false);
   const prevContentRef = useRef('');
@@ -238,6 +249,7 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
           const writable = await currentFileHandle.createWritable();
           await writable.write(markdown);
           await writable.close();
+          onAutosaveClearDraft?.();
           return;
         }
         
@@ -255,6 +267,7 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
           await writable.write(markdown);
           await writable.close();
           onFileHandleChange?.(handle);
+          onAutosaveClearDraft?.();
         } else {
           const filename = prompt('Enter filename:', 'document.md');
           if (!filename) return;
@@ -265,6 +278,7 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
           link.download = filename;
           link.click();
           URL.revokeObjectURL(url);
+          onAutosaveClearDraft?.();
         }
       } catch (err: any) {
         if (err.name !== 'AbortError') {
@@ -330,6 +344,9 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
         <EditorContent editor={editor} />
       </div>
       <div className="editor-statusbar">
+        <span className={`status-item autosave-status autosave-${autosaveStatus}`}>
+          {AUTOSAVE_LABELS[autosaveStatus]}
+        </span>
         <span className="status-item">
           {editor.storage.characterCount ? editor.storage.characterCount.words() : 0} words
         </span>
