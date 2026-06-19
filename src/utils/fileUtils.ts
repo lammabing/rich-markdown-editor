@@ -588,6 +588,16 @@ export function downloadFile(content: string, filename: string, mimeType: string
 }
 
 /**
+ * Get a timestamp-based filename with md extension
+ */
+export function getTimestampFilename(): string {
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  const ts = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+  return `${ts}.md`;
+}
+
+/**
  * Read file content
  */
 export function readFile(file: File): Promise<string> {

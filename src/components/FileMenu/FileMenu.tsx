@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Editor } from '@tiptap/react';
-import { htmlToMarkdown, downloadFile } from '../../utils/fileUtils';
+import { htmlToMarkdown, downloadFile, getTimestampFilename } from '../../utils/fileUtils';
 import './FileMenu.css';
 
 interface FileMenuProps {
@@ -30,7 +30,7 @@ export function FileMenu({ editor, onOpenFile, onNewDocument, currentFileHandle,
       
       if ('showSaveFilePicker' in window) {
         const handle = await (window as any).showSaveFilePicker({
-          suggestedName: 'document.md',
+          suggestedName: getTimestampFilename(),
           types: [
             {
               description: 'Markdown files',
@@ -46,7 +46,7 @@ export function FileMenu({ editor, onOpenFile, onNewDocument, currentFileHandle,
         onFileHandleChange?.(handle);
         setIsSaving(false);
       } else {
-        const filename = prompt('Enter filename:', 'document.md');
+        const filename = prompt('Enter filename:', getTimestampFilename());
         if (!filename) return;
         downloadFile(markdown, filename, 'text/markdown');
       }

@@ -26,7 +26,7 @@ import { HelpExtension } from '../../extensions/HelpExtension';
 import SlashCommandExtension from '../../extensions/SlashCommandExtension';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { useKeyboardShortcuts } from '../../hooks/useKeyboardShortcuts';
-import { htmlToMarkdown } from '../../utils/fileUtils';
+import { htmlToMarkdown, getTimestampFilename } from '../../utils/fileUtils';
 import { FONTS, loadGoogleFont } from '../../utils/fontLoader';
 import type { AutosaveStatus } from '../../hooks/useAutosave';
 import './Editor.css';
@@ -255,7 +255,7 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
         
         if ('showSaveFilePicker' in window) {
           const handle = await (window as any).showSaveFilePicker({
-            suggestedName: 'document.md',
+            suggestedName: getTimestampFilename(),
             types: [
               {
                 description: 'Markdown files',
@@ -269,7 +269,7 @@ export function Editor({ content = '', onChange, onOpenFile, onNewDocument, curr
           onFileHandleChange?.(handle);
           onAutosaveClearDraft?.();
         } else {
-          const filename = prompt('Enter filename:', 'document.md');
+          const filename = prompt('Enter filename:', getTimestampFilename());
           if (!filename) return;
           const blob = new Blob([markdown], { type: 'text/markdown' });
           const url = URL.createObjectURL(blob);
