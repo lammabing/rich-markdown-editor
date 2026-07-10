@@ -1,4 +1,8 @@
-# Markdown Editor
+# Rich Markdown Editor
+
+<p align="center">
+  <img src="public/github-banner.png" alt="Rich Markdown Editor" width="100%">
+</p>
 
 A modern, feature-rich markdown editor with real-time in-place rendering, slash commands, and extensive GFM (GitHub Flavored Markdown) support.
 

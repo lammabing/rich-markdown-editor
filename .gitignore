@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Agent artifacts
+.qwen/
+.kilocode/
+.roocode/
+.cline/
+.cursor/

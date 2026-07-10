@@ -1,5 +1,11 @@
 {
-  "name": "markdown-editor-temp",
+  "name": "rich-markdown-editor",
+  "description": "A modern, feature-rich markdown editor with real-time in-place rendering, slash commands, and extensive GFM support.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lammabing/rich-markdown-editor.git"
+  },
+  "homepage": "https://github.com/lammabing/rich-markdown-editor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
